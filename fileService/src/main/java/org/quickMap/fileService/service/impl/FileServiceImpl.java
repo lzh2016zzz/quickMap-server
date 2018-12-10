@@ -109,8 +109,7 @@ public class FileServiceImpl implements IFileService {
 
     public void deleteFile(String fullPath) {
         Assert.hasText(fullPath, "路径不能为空");
-        fileSearchService.delete(fullPath);
-        storageClient.deleteFile(fullPath);
+        deleteFile(getStorePath(fullPath));
     }
 
 
