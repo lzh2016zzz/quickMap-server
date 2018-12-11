@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.quickmap.storageService.dao.base.FileInfoBaseMapper">
+
+
+    <insert id="insertFileInfo"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `file_info`
+        (
+        <trim suffixOverrides=",">
+                    <if test="id!=null">
+                        `id`,
+                    </if>
+                    <if test="filename!=null">
+                        `filename`,
+                    </if>
+                    <if test="size!=null">
+                        `size`,
+                    </if>
+                    <if test="path!=null">
+                        `path`,
+                    </if>
+                    <if test="timestamp!=null">
+                        `timestamp`,
+                    </if>
+                    <if test="author!=null">
+                        `author`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="id!=null">
+                    #{id},
+                </if>
+                <if test="filename!=null">
+                    #{filename},
+                </if>
+                <if test="size!=null">
+                    #{size},
+                </if>
+                <if test="path!=null">
+                    #{path},
+                </if>
+                <if test="timestamp!=null">
+                    #{timestamp},
+                </if>
+                <if test="author!=null">
+                    #{author},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateFileInfo">
+        UPDATE `file_info`
+        SET
+        <trim suffixOverrides=",">
+            <if test="filename != null and filename!=''">
+                `filename` = #{filename},
+            </if>
+            <if test="size != null">
+                `size` = #{size},
+            </if>
+            <if test="path != null and path!=''">
+                `path` = #{path},
+            </if>
+            <if test="timestamp != null">
+                `timestamp` = #{timestamp},
+            </if>
+            <if test="author != null">
+                `author` = #{author},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+
+
+    <resultMap type="org.quickmap.storageService.dao.model.FileInfo" id="FileInfoMap">
+        <result property="id" column="id"/>
+        <result property="filename" column="filename"/>
+        <result property="size" column="size"/>
+        <result property="path" column="path"/>
+        <result property="timestamp" column="timestamp"/>
+        <result property="author" column="author"/>
+    </resultMap>
+
+
+    <select id="queryFileInfo" resultMap="FileInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `file_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="filename != null and filename!=''">
+                `filename` = #{filename} and
+            </if>
+            <if test="size != null">
+                `size` = #{size} and
+            </if>
+            <if test="path != null and path!=''">
+                `path` = #{path} and
+            </if>
+            <if test="timestamp != null">
+                `timestamp` = #{timestamp} and
+            </if>
+            <if test="author != null">
+                `author` = #{author} and
+            </if>
+            <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="filenameList != null">
+                    `filename` in
+                    <foreach collection="filenameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyFilename!=null and fuzzyFilename.size()>0">
+                    (
+                    <foreach collection="fuzzyFilename"  separator="or" item="item">
+                        `Filename` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyFilename!=null and rightFuzzyFilename.size()>0">
+                    (
+                    <foreach collection="rightFuzzyFilename"  separator="or" item="item">
+                        `Filename` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="sizeList != null">
+                    `size` in
+                    <foreach collection="sizeList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="sizeSt !=null">
+                    `size` >= #{sizeSt} and
+                </if>
+                <if test="sizeEd!=null">
+                    `size` &lt;= #{sizeEd} and
+                </if>
+                <if test="pathList != null">
+                    `path` in
+                    <foreach collection="pathList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyPath!=null and fuzzyPath.size()>0">
+                    (
+                    <foreach collection="fuzzyPath"  separator="or" item="item">
+                        `Path` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPath!=null and rightFuzzyPath.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPath"  separator="or" item="item">
+                        `Path` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="timestampList != null">
+                    `timestamp` in
+                    <foreach collection="timestampList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="timestampSt !=null">
+                    `timestamp` >= #{timestampSt} and
+                </if>
+                <if test="timestampEd!=null">
+                    `timestamp` &lt;= #{timestampEd} and
+                </if>
+                <if test="authorList != null">
+                    `author` in
+                    <foreach collection="authorList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="authorSt !=null">
+                    `author` >= #{authorSt} and
+                </if>
+                <if test="authorEd!=null">
+                    `author` &lt;= #{authorEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryFileInfoLimit1" resultMap="FileInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `file_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="filename != null and filename!=''">
+                `filename` = #{filename} and
+            </if>
+            <if test="size != null">
+                `size` = #{size} and
+            </if>
+            <if test="path != null and path!=''">
+                `path` = #{path} and
+            </if>
+            <if test="timestamp != null">
+                `timestamp` = #{timestamp} and
+            </if>
+            <if test="author != null">
+                `author` = #{author} and
+            </if>
+            <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                    <if test="filenameList != null">
+                        `filename` in
+                        <foreach collection="filenameList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyFilename!=null and fuzzyFilename.size()>0">
+                    (
+                    <foreach collection="fuzzyFilename"  separator="or" item="item">
+                        `Filename` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyFilename!=null and rightFuzzyFilename.size()>0">
+                    (
+                    <foreach collection="rightFuzzyFilename"  separator="or" item="item">
+                        `Filename` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="sizeList != null">
+                        `size` in
+                        <foreach collection="sizeList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="sizeSt !=null">
+                    `size` >= #{sizeSt} and
+                </if>
+                <if test="sizeEd!=null">
+                    `size` &lt;= #{sizeEd} and
+                </if>
+                    <if test="pathList != null">
+                        `path` in
+                        <foreach collection="pathList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyPath!=null and fuzzyPath.size()>0">
+                    (
+                    <foreach collection="fuzzyPath"  separator="or" item="item">
+                        `Path` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPath!=null and rightFuzzyPath.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPath"  separator="or" item="item">
+                        `Path` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="timestampList != null">
+                        `timestamp` in
+                        <foreach collection="timestampList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="timestampSt !=null">
+                    `timestamp` >= #{timestampSt} and
+                </if>
+                <if test="timestampEd!=null">
+                    `timestamp` &lt;= #{timestampEd} and
+                </if>
+                    <if test="authorList != null">
+                        `author` in
+                        <foreach collection="authorList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="authorSt !=null">
+                    `author` >= #{authorSt} and
+                </if>
+                <if test="authorEd!=null">
+                    `author` &lt;= #{authorEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `filename`,
+        `size`,
+        `path`,
+        `timestamp`,
+        `author`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.filename==true">
+                        `filename`,
+                    </if>
+                    <if test="fetchFields.fetchFields.size==true">
+                        `size`,
+                    </if>
+                    <if test="fetchFields.fetchFields.path==true">
+                        `path`,
+                    </if>
+                    <if test="fetchFields.fetchFields.timestamp==true">
+                        `timestamp`,
+                    </if>
+                    <if test="fetchFields.fetchFields.author==true">
+                        `author`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.filename==null">
+                        `filename`,
+                    </if>
+                    <if test="fetchFields.excludeFields.size==null">
+                        `size`,
+                    </if>
+                    <if test="fetchFields.excludeFields.path==null">
+                        `path`,
+                    </if>
+                    <if test="fetchFields.excludeFields.timestamp==null">
+                        `timestamp`,
+                    </if>
+                    <if test="fetchFields.excludeFields.author==null">
+                        `author`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>
