@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.quickMap</groupId>
-    <artifactId>utils</artifactId>
+    <artifactId>base</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>utils</name>
-    <description>utils</description>
+    <name>base</name>
+    <description>base</description>
 
     <parent>
         <groupId>org.quickMap</groupId>

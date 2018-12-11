@@ -3,14 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/apiService/apiService.iml" filepath="$PROJECT_DIR$/apiService/apiService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/apiService/apiService.iml" filepath="$PROJECT_DIR$/apiService/apiService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fileService/fileService.iml" filepath="$PROJECT_DIR$/fileService/fileService.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
       <module fileurl="file://$PROJECT_DIR$/fileService/fileService.iml" filepath="$PROJECT_DIR$/fileService/fileService.iml" />
       <module fileurl="file://$PROJECT_DIR$/quickMap-server.iml" filepath="$PROJECT_DIR$/quickMap-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/regService/regService.iml" filepath="$PROJECT_DIR$/regService/regService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/regService/regService.iml" filepath="$PROJECT_DIR$/regService/regService.iml" />
       <module fileurl="file://$PROJECT_DIR$/services/services.iml" filepath="$PROJECT_DIR$/services/services.iml" />
-      <module fileurl="file://$PROJECT_DIR$/utils/utils.iml" filepath="$PROJECT_DIR$/utils/utils.iml" />
+      <module fileurl="file://$PROJECT_DIR$/storageService/storageService.iml" filepath="$PROJECT_DIR$/storageService/storageService.iml" />
     </modules>
   </component>
 </project>

@@ -1,13 +1,14 @@
 package org.quickMap.fileService.model;
 
-public class UploadResponse {
+public class FileInfo {
 
+
+    private String id;
     private String filename;
     private long size;
     private String path;
-    private String group;
-    private String fPath;
-    private String hash;
+    private long timestamp;
+    private String author;
 
     public String getFilename() {
         return filename;
@@ -16,7 +17,6 @@ public class UploadResponse {
     public void setFilename(String filename) {
         this.filename = filename;
     }
-
 
     public long getSize() {
         return size;
@@ -34,29 +34,26 @@ public class UploadResponse {
         this.path = path;
     }
 
-    public String getHash() {
-        return hash;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public String getGroup() {
-        return group;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public String getfPath() {
-        return fPath;
+    public String getId() {
+        return id;
     }
-
-    public void setfPath(String fPath) {
-        this.fPath = fPath;
+    public void setId(String id) {
+        this.id = id;
     }
-
-
 }

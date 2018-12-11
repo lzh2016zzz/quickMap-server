@@ -5,6 +5,7 @@ import org.springframework.util.Base64Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.quickMap.constant.FileServiceConstant.MineType.getMineTypes;
@@ -46,7 +47,7 @@ public class FileOperatorUtil {
      * @throws UnsupportedEncodingException
      */
     public static String encodePath(String path) throws UnsupportedEncodingException {
-        return Base64Utils.encodeToUrlSafeString(path.getBytes("utf-8"));
+        return Base64Utils.encodeToUrlSafeString(path.getBytes(StandardCharsets.UTF_8));
     }
 
     /**

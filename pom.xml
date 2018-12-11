@@ -28,7 +28,8 @@
         <!--业务接口服务-->
         <module>apiService</module>
         <module>services</module>
-        <module>utils</module>
+        <module>base</module>
+        <module>storageService</module>
     </modules>
 
     <properties>
@@ -70,17 +71,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-feign</artifactId>
             <version>1.4.6.RELEASE</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.redislabs/jredisearch -->
-        <dependency>
-            <groupId>com.redislabs</groupId>
-            <artifactId>jredisearch</artifactId>
-            <version>0.21.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>1.5.9.RELEASE</version>
         </dependency>
     </dependencies>
 

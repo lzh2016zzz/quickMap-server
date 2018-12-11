@@ -44,14 +44,8 @@
         </dependency>
         <dependency>
             <groupId>org.quickMap</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>base</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.quickMap</groupId>
-            <artifactId>cache</artifactId>
-            <version>1.0.0.RELEASE</version>
             <scope>compile</scope>
         </dependency>
 

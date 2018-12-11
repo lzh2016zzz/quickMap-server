@@ -1,16 +1,18 @@
-package org.quickMap.fileService.constant;
+package org.quickmap.storageService.cfg;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
-@Component
-public class RedisConfig {
+@Configuration
+@PropertySource("classpath:redis.properties")
+public class RedisConstant {
 
     @Value("${spring.redis.poolSize}")
     private int poolSize;
 
-    @Value("${spring.redis.indexName}")
-    private String indexName;
+    @Value("${spring.redis.fsIndexName}")
+    private String fsIndexName;
 
     @Value("${spring.redis.host}")
     private String host;
@@ -32,8 +34,8 @@ public class RedisConfig {
         return poolSize;
     }
 
-    public String getIndexName() {
-        return indexName;
+    public String getFsIndexName() {
+        return fsIndexName;
     }
 
     public String getHost() {
