@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class FileInfo implements Serializable {
 
-    private static final long serialVersionUID = 1544518570503L;
+    private static final long serialVersionUID = 1544533626191L;
 
 
     /**
@@ -42,7 +42,7 @@ public class FileInfo implements Serializable {
     * 
     * isNullAble:1
     */
-    private Integer timestamp;
+    private Long timestamp;
 
     /**
     * 
@@ -50,54 +50,40 @@ public class FileInfo implements Serializable {
     */
     private Integer author;
 
+    /**
+    * 
+    * isNullAble:0,defaultVal:1
+    */
+    private Integer isdel;
 
-    public void setId(Integer id){
-        this.id = id;
-    }
 
-    public Integer getId(){
-        return this.id;
-    }
+    public void setId(Integer id){this.id = id;}
 
-    public void setFilename(String filename){
-        this.filename = filename;
-    }
+    public Integer getId(){return this.id;}
 
-    public String getFilename(){
-        return this.filename;
-    }
+    public void setFilename(String filename){this.filename = filename;}
 
-    public void setSize(Long size){
-        this.size = size;
-    }
+    public String getFilename(){return this.filename;}
 
-    public Long getSize(){
-        return this.size;
-    }
+    public void setSize(Long size){this.size = size;}
 
-    public void setPath(String path){
-        this.path = path;
-    }
+    public Long getSize(){return this.size;}
 
-    public String getPath(){
-        return this.path;
-    }
+    public void setPath(String path){this.path = path;}
 
-    public void setTimestamp(Integer timestamp){
-        this.timestamp = timestamp;
-    }
+    public String getPath(){return this.path;}
 
-    public Integer getTimestamp(){
-        return this.timestamp;
-    }
+    public void setTimestamp(Long timestamp){this.timestamp = timestamp;}
 
-    public void setAuthor(Integer author){
-        this.author = author;
-    }
+    public Long getTimestamp(){return this.timestamp;}
 
-    public Integer getAuthor(){
-        return this.author;
-    }
+    public void setAuthor(Integer author){this.author = author;}
+
+    public Integer getAuthor(){return this.author;}
+
+    public void setIsdel(Integer isdel){this.isdel = isdel;}
+
+    public Integer getIsdel(){return this.isdel;}
     @Override
     public String toString() {
         return "FileInfo{" +
@@ -107,11 +93,45 @@ public class FileInfo implements Serializable {
                 "path='" + path + '\'' +
                 "timestamp='" + timestamp + '\'' +
                 "author='" + author + '\'' +
+                "isdel='" + isdel + '\'' +
             '}';
     }
 
-    public static QueryBuilder QueryBuild(){
-        return new QueryBuilder();
+    public static Builder Build(){return new Builder();}
+
+    public static ConditionBuilder ConditionBuild(){return new ConditionBuilder();}
+
+    public static UpdateBuilder UpdateBuild(){return new UpdateBuilder();}
+
+    public static QueryBuilder QueryBuild(){return new QueryBuilder();}
+
+    public static class UpdateBuilder {
+
+        private FileInfo set;
+
+        private ConditionBuilder where;
+
+        public UpdateBuilder set(FileInfo set){
+            this.set = set;
+            return this;
+        }
+
+        public FileInfo getSet(){
+            return this.set;
+        }
+
+        public UpdateBuilder where(ConditionBuilder where){
+            this.where = where;
+            return this;
+        }
+
+        public ConditionBuilder getWhere(){
+            return this.where;
+        }
+
+        public UpdateBuilder build(){
+            return this;
+        }
     }
 
     public static class QueryBuilder extends FileInfo{
@@ -120,98 +140,95 @@ public class FileInfo implements Serializable {
         */
         private Map<String,Object> fetchFields;
 
-        public Map<String,Object> getFetchFields(){
-            return this.fetchFields;
-        }
+        public Map<String,Object> getFetchFields(){return this.fetchFields;}
 
         private List<Integer> idList;
+
+        public List<Integer> getIdList(){return this.idList;}
 
         private Integer idSt;
 
         private Integer idEd;
 
-        public Integer getIdSt(){
-            return this.idSt;
-        }
+        public Integer getIdSt(){return this.idSt;}
 
-        public Integer getIdEd(){
-            return this.idEd;
-        }
+        public Integer getIdEd(){return this.idEd;}
 
         private List<String> filenameList;
+
+        public List<String> getFilenameList(){return this.filenameList;}
 
 
         private List<String> fuzzyFilename;
 
-        public List<String> getFuzzyFilename(){
-            return this.fuzzyFilename;
-        }
+        public List<String> getFuzzyFilename(){return this.fuzzyFilename;}
 
         private List<String> rightFuzzyFilename;
 
-        public List<String> getRightFuzzyFilename(){
-            return this.rightFuzzyFilename;
-        }
+        public List<String> getRightFuzzyFilename(){return this.rightFuzzyFilename;}
         private List<Long> sizeList;
+
+        public List<Long> getSizeList(){return this.sizeList;}
 
         private Long sizeSt;
 
         private Long sizeEd;
 
-        public Long getSizeSt(){
-            return this.sizeSt;
-        }
+        public Long getSizeSt(){return this.sizeSt;}
 
-        public Long getSizeEd(){
-            return this.sizeEd;
-        }
+        public Long getSizeEd(){return this.sizeEd;}
 
         private List<String> pathList;
+
+        public List<String> getPathList(){return this.pathList;}
 
 
         private List<String> fuzzyPath;
 
-        public List<String> getFuzzyPath(){
-            return this.fuzzyPath;
-        }
+        public List<String> getFuzzyPath(){return this.fuzzyPath;}
 
         private List<String> rightFuzzyPath;
 
-        public List<String> getRightFuzzyPath(){
-            return this.rightFuzzyPath;
-        }
-        private List<Integer> timestampList;
+        public List<String> getRightFuzzyPath(){return this.rightFuzzyPath;}
+        private List<Long> timestampList;
 
-        private Integer timestampSt;
+        public List<Long> getTimestampList(){return this.timestampList;}
 
-        private Integer timestampEd;
+        private Long timestampSt;
 
-        public Integer getTimestampSt(){
-            return this.timestampSt;
-        }
+        private Long timestampEd;
 
-        public Integer getTimestampEd(){
-            return this.timestampEd;
-        }
+        public Long getTimestampSt(){return this.timestampSt;}
+
+        public Long getTimestampEd(){return this.timestampEd;}
 
         private List<Integer> authorList;
+
+        public List<Integer> getAuthorList(){return this.authorList;}
 
         private Integer authorSt;
 
         private Integer authorEd;
 
-        public Integer getAuthorSt(){
-            return this.authorSt;
-        }
+        public Integer getAuthorSt(){return this.authorSt;}
 
-        public Integer getAuthorEd(){
-            return this.authorEd;
-        }
+        public Integer getAuthorEd(){return this.authorEd;}
+
+        private List<Integer> isdelList;
+
+        public List<Integer> getIsdelList(){return this.isdelList;}
+
+        private Integer isdelSt;
+
+        private Integer isdelEd;
+
+        public Integer getIsdelSt(){return this.isdelSt;}
+
+        public Integer getIsdelEd(){return this.isdelEd;}
 
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
-
 
         public QueryBuilder idBetWeen(Integer idSt,Integer idEd){
             this.idSt = idSt;
@@ -235,16 +252,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder idList(Integer ... id){
-            if (id != null){
-                List<Integer> list = new ArrayList<>();
-                for (Integer item : id){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.idList = list;
-            }
-
+            this.idList = solveNullList(id);
             return this;
         }
 
@@ -263,23 +271,13 @@ public class FileInfo implements Serializable {
             return this;
         }
 
-
-
         public QueryBuilder fuzzyFilename (List<String> fuzzyFilename){
             this.fuzzyFilename = fuzzyFilename;
             return this;
         }
 
         public QueryBuilder fuzzyFilename (String ... fuzzyFilename){
-            if (fuzzyFilename != null){
-                List<String> list = new ArrayList<>();
-                for (String item : fuzzyFilename){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.fuzzyFilename = list;
-            }
+            this.fuzzyFilename = solveNullList(fuzzyFilename);
             return this;
         }
 
@@ -289,15 +287,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder rightFuzzyFilename (String ... rightFuzzyFilename){
-            if (rightFuzzyFilename != null){
-                List<String> list = new ArrayList<>();
-                for (String item : rightFuzzyFilename){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.rightFuzzyFilename = list;
-            }
+            this.rightFuzzyFilename = solveNullList(rightFuzzyFilename);
             return this;
         }
 
@@ -307,16 +297,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder filenameList(String ... filename){
-            if (filename != null){
-                List<String> list = new ArrayList<>();
-                for (String item : filename){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.filenameList = list;
-            }
-
+            this.filenameList = solveNullList(filename);
             return this;
         }
 
@@ -334,8 +315,6 @@ public class FileInfo implements Serializable {
             setFetchFields("excludeFields","filename");
             return this;
         }
-
-
 
         public QueryBuilder sizeBetWeen(Long sizeSt,Long sizeEd){
             this.sizeSt = sizeSt;
@@ -359,16 +338,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder sizeList(Long ... size){
-            if (size != null){
-                List<Long> list = new ArrayList<>();
-                for (Long item : size){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.sizeList = list;
-            }
-
+            this.sizeList = solveNullList(size);
             return this;
         }
 
@@ -387,23 +357,13 @@ public class FileInfo implements Serializable {
             return this;
         }
 
-
-
         public QueryBuilder fuzzyPath (List<String> fuzzyPath){
             this.fuzzyPath = fuzzyPath;
             return this;
         }
 
         public QueryBuilder fuzzyPath (String ... fuzzyPath){
-            if (fuzzyPath != null){
-                List<String> list = new ArrayList<>();
-                for (String item : fuzzyPath){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.fuzzyPath = list;
-            }
+            this.fuzzyPath = solveNullList(fuzzyPath);
             return this;
         }
 
@@ -413,15 +373,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder rightFuzzyPath (String ... rightFuzzyPath){
-            if (rightFuzzyPath != null){
-                List<String> list = new ArrayList<>();
-                for (String item : rightFuzzyPath){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.rightFuzzyPath = list;
-            }
+            this.rightFuzzyPath = solveNullList(rightFuzzyPath);
             return this;
         }
 
@@ -431,16 +383,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder pathList(String ... path){
-            if (path != null){
-                List<String> list = new ArrayList<>();
-                for (String item : path){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.pathList = list;
-            }
-
+            this.pathList = solveNullList(path);
             return this;
         }
 
@@ -459,44 +402,33 @@ public class FileInfo implements Serializable {
             return this;
         }
 
-
-
-        public QueryBuilder timestampBetWeen(Integer timestampSt,Integer timestampEd){
+        public QueryBuilder timestampBetWeen(Long timestampSt,Long timestampEd){
             this.timestampSt = timestampSt;
             this.timestampEd = timestampEd;
             return this;
         }
 
-        public QueryBuilder timestampGreaterEqThan(Integer timestampSt){
+        public QueryBuilder timestampGreaterEqThan(Long timestampSt){
             this.timestampSt = timestampSt;
             return this;
         }
-        public QueryBuilder timestampLessEqThan(Integer timestampEd){
+        public QueryBuilder timestampLessEqThan(Long timestampEd){
             this.timestampEd = timestampEd;
             return this;
         }
 
 
-        public QueryBuilder timestamp(Integer timestamp){
+        public QueryBuilder timestamp(Long timestamp){
             setTimestamp(timestamp);
             return this;
         }
 
-        public QueryBuilder timestampList(Integer ... timestamp){
-            if (timestamp != null){
-                List<Integer> list = new ArrayList<>();
-                for (Integer item : timestamp){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.timestampList = list;
-            }
-
+        public QueryBuilder timestampList(Long ... timestamp){
+            this.timestampList = solveNullList(timestamp);
             return this;
         }
 
-        public QueryBuilder timestampList(List<Integer> timestamp){
+        public QueryBuilder timestampList(List<Long> timestamp){
             this.timestampList = timestamp;
             return this;
         }
@@ -510,8 +442,6 @@ public class FileInfo implements Serializable {
             setFetchFields("excludeFields","timestamp");
             return this;
         }
-
-
 
         public QueryBuilder authorBetWeen(Integer authorSt,Integer authorEd){
             this.authorSt = authorSt;
@@ -535,16 +465,7 @@ public class FileInfo implements Serializable {
         }
 
         public QueryBuilder authorList(Integer ... author){
-            if (author != null){
-                List<Integer> list = new ArrayList<>();
-                for (Integer item : author){
-                    if (item != null){
-                        list.add(item);
-                    }
-                }
-                this.authorList = list;
-            }
-
+            this.authorList = solveNullList(author);
             return this;
         }
 
@@ -561,6 +482,59 @@ public class FileInfo implements Serializable {
         public QueryBuilder excludeAuthor(){
             setFetchFields("excludeFields","author");
             return this;
+        }
+
+        public QueryBuilder isdelBetWeen(Integer isdelSt,Integer isdelEd){
+            this.isdelSt = isdelSt;
+            this.isdelEd = isdelEd;
+            return this;
+        }
+
+        public QueryBuilder isdelGreaterEqThan(Integer isdelSt){
+            this.isdelSt = isdelSt;
+            return this;
+        }
+        public QueryBuilder isdelLessEqThan(Integer isdelEd){
+            this.isdelEd = isdelEd;
+            return this;
+        }
+
+
+        public QueryBuilder isdel(Integer isdel){
+            setIsdel(isdel);
+            return this;
+        }
+
+        public QueryBuilder isdelList(Integer ... isdel){
+            this.isdelList = solveNullList(isdel);
+            return this;
+        }
+
+        public QueryBuilder isdelList(List<Integer> isdel){
+            this.isdelList = isdel;
+            return this;
+        }
+
+        public QueryBuilder fetchIsdel(){
+            setFetchFields("fetchFields","isdel");
+            return this;
+        }
+
+        public QueryBuilder excludeIsdel(){
+            setFetchFields("excludeFields","isdel");
+            return this;
+        }
+        private <T>List<T> solveNullList(T ... objs){
+            if (objs != null){
+            List<T> list = new ArrayList<>();
+                for (T item : objs){
+                    if (item != null){
+                        list.add(item);
+                    }
+                }
+                return list;
+            }
+            return null;
         }
 
         public QueryBuilder fetchAll(){
@@ -588,9 +562,339 @@ public class FileInfo implements Serializable {
             this.fetchFields.put(key,fields);
         }
 
-        public FileInfo build(){
+        public FileInfo build(){return this;}
+    }
+
+
+    public static class ConditionBuilder{
+        private List<Integer> idList;
+
+        public List<Integer> getIdList(){return this.idList;}
+
+        private Integer idSt;
+
+        private Integer idEd;
+
+        public Integer getIdSt(){return this.idSt;}
+
+        public Integer getIdEd(){return this.idEd;}
+
+        private List<String> filenameList;
+
+        public List<String> getFilenameList(){return this.filenameList;}
+
+
+        private List<String> fuzzyFilename;
+
+        public List<String> getFuzzyFilename(){return this.fuzzyFilename;}
+
+        private List<String> rightFuzzyFilename;
+
+        public List<String> getRightFuzzyFilename(){return this.rightFuzzyFilename;}
+        private List<Long> sizeList;
+
+        public List<Long> getSizeList(){return this.sizeList;}
+
+        private Long sizeSt;
+
+        private Long sizeEd;
+
+        public Long getSizeSt(){return this.sizeSt;}
+
+        public Long getSizeEd(){return this.sizeEd;}
+
+        private List<String> pathList;
+
+        public List<String> getPathList(){return this.pathList;}
+
+
+        private List<String> fuzzyPath;
+
+        public List<String> getFuzzyPath(){return this.fuzzyPath;}
+
+        private List<String> rightFuzzyPath;
+
+        public List<String> getRightFuzzyPath(){return this.rightFuzzyPath;}
+        private List<Long> timestampList;
+
+        public List<Long> getTimestampList(){return this.timestampList;}
+
+        private Long timestampSt;
+
+        private Long timestampEd;
+
+        public Long getTimestampSt(){return this.timestampSt;}
+
+        public Long getTimestampEd(){return this.timestampEd;}
+
+        private List<Integer> authorList;
+
+        public List<Integer> getAuthorList(){return this.authorList;}
+
+        private Integer authorSt;
+
+        private Integer authorEd;
+
+        public Integer getAuthorSt(){return this.authorSt;}
+
+        public Integer getAuthorEd(){return this.authorEd;}
+
+        private List<Integer> isdelList;
+
+        public List<Integer> getIsdelList(){return this.isdelList;}
+
+        private Integer isdelSt;
+
+        private Integer isdelEd;
+
+        public Integer getIsdelSt(){return this.isdelSt;}
+
+        public Integer getIsdelEd(){return this.isdelEd;}
+
+
+        public ConditionBuilder idBetWeen(Integer idSt,Integer idEd){
+            this.idSt = idSt;
+            this.idEd = idEd;
             return this;
         }
+
+        public ConditionBuilder idGreaterEqThan(Integer idSt){
+            this.idSt = idSt;
+            return this;
+        }
+        public ConditionBuilder idLessEqThan(Integer idEd){
+            this.idEd = idEd;
+            return this;
+        }
+
+
+        public ConditionBuilder idList(Integer ... id){
+            this.idList = solveNullList(id);
+            return this;
+        }
+
+        public ConditionBuilder idList(List<Integer> id){
+            this.idList = id;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyFilename (List<String> fuzzyFilename){
+            this.fuzzyFilename = fuzzyFilename;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyFilename (String ... fuzzyFilename){
+            this.fuzzyFilename = solveNullList(fuzzyFilename);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyFilename (List<String> rightFuzzyFilename){
+            this.rightFuzzyFilename = rightFuzzyFilename;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyFilename (String ... rightFuzzyFilename){
+            this.rightFuzzyFilename = solveNullList(rightFuzzyFilename);
+            return this;
+        }
+
+        public ConditionBuilder filenameList(String ... filename){
+            this.filenameList = solveNullList(filename);
+            return this;
+        }
+
+        public ConditionBuilder filenameList(List<String> filename){
+            this.filenameList = filename;
+            return this;
+        }
+
+        public ConditionBuilder sizeBetWeen(Long sizeSt,Long sizeEd){
+            this.sizeSt = sizeSt;
+            this.sizeEd = sizeEd;
+            return this;
+        }
+
+        public ConditionBuilder sizeGreaterEqThan(Long sizeSt){
+            this.sizeSt = sizeSt;
+            return this;
+        }
+        public ConditionBuilder sizeLessEqThan(Long sizeEd){
+            this.sizeEd = sizeEd;
+            return this;
+        }
+
+
+        public ConditionBuilder sizeList(Long ... size){
+            this.sizeList = solveNullList(size);
+            return this;
+        }
+
+        public ConditionBuilder sizeList(List<Long> size){
+            this.sizeList = size;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyPath (List<String> fuzzyPath){
+            this.fuzzyPath = fuzzyPath;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyPath (String ... fuzzyPath){
+            this.fuzzyPath = solveNullList(fuzzyPath);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyPath (List<String> rightFuzzyPath){
+            this.rightFuzzyPath = rightFuzzyPath;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyPath (String ... rightFuzzyPath){
+            this.rightFuzzyPath = solveNullList(rightFuzzyPath);
+            return this;
+        }
+
+        public ConditionBuilder pathList(String ... path){
+            this.pathList = solveNullList(path);
+            return this;
+        }
+
+        public ConditionBuilder pathList(List<String> path){
+            this.pathList = path;
+            return this;
+        }
+
+        public ConditionBuilder timestampBetWeen(Long timestampSt,Long timestampEd){
+            this.timestampSt = timestampSt;
+            this.timestampEd = timestampEd;
+            return this;
+        }
+
+        public ConditionBuilder timestampGreaterEqThan(Long timestampSt){
+            this.timestampSt = timestampSt;
+            return this;
+        }
+        public ConditionBuilder timestampLessEqThan(Long timestampEd){
+            this.timestampEd = timestampEd;
+            return this;
+        }
+
+
+        public ConditionBuilder timestampList(Long ... timestamp){
+            this.timestampList = solveNullList(timestamp);
+            return this;
+        }
+
+        public ConditionBuilder timestampList(List<Long> timestamp){
+            this.timestampList = timestamp;
+            return this;
+        }
+
+        public ConditionBuilder authorBetWeen(Integer authorSt,Integer authorEd){
+            this.authorSt = authorSt;
+            this.authorEd = authorEd;
+            return this;
+        }
+
+        public ConditionBuilder authorGreaterEqThan(Integer authorSt){
+            this.authorSt = authorSt;
+            return this;
+        }
+        public ConditionBuilder authorLessEqThan(Integer authorEd){
+            this.authorEd = authorEd;
+            return this;
+        }
+
+
+        public ConditionBuilder authorList(Integer ... author){
+            this.authorList = solveNullList(author);
+            return this;
+        }
+
+        public ConditionBuilder authorList(List<Integer> author){
+            this.authorList = author;
+            return this;
+        }
+
+        public ConditionBuilder isdelBetWeen(Integer isdelSt,Integer isdelEd){
+            this.isdelSt = isdelSt;
+            this.isdelEd = isdelEd;
+            return this;
+        }
+
+        public ConditionBuilder isdelGreaterEqThan(Integer isdelSt){
+            this.isdelSt = isdelSt;
+            return this;
+        }
+        public ConditionBuilder isdelLessEqThan(Integer isdelEd){
+            this.isdelEd = isdelEd;
+            return this;
+        }
+
+
+        public ConditionBuilder isdelList(Integer ... isdel){
+            this.isdelList = solveNullList(isdel);
+            return this;
+        }
+
+        public ConditionBuilder isdelList(List<Integer> isdel){
+            this.isdelList = isdel;
+            return this;
+        }
+
+        private <T>List<T> solveNullList(T ... objs){
+            if (objs != null){
+            List<T> list = new ArrayList<>();
+                for (T item : objs){
+                    if (item != null){
+                        list.add(item);
+                    }
+                }
+                return list;
+            }
+            return null;
+        }
+
+        public ConditionBuilder build(){return this;}
+    }
+
+    public static class Builder {
+
+        private FileInfo obj;
+
+        public Builder(){
+            this.obj = new FileInfo();
+        }
+
+        public Builder id(Integer id){
+            this.obj.setId(id);
+            return this;
+        }
+        public Builder filename(String filename){
+            this.obj.setFilename(filename);
+            return this;
+        }
+        public Builder size(Long size){
+            this.obj.setSize(size);
+            return this;
+        }
+        public Builder path(String path){
+            this.obj.setPath(path);
+            return this;
+        }
+        public Builder timestamp(Long timestamp){
+            this.obj.setTimestamp(timestamp);
+            return this;
+        }
+        public Builder author(Integer author){
+            this.obj.setAuthor(author);
+            return this;
+        }
+        public Builder isdel(Integer isdel){
+            this.obj.setIsdel(isdel);
+            return this;
+        }
+        public FileInfo build(){return obj;}
     }
 
 }

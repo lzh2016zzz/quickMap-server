@@ -7,6 +7,20 @@ public class FileServiceConstant {
         public static final String AUTHOR = "author";//作者
         public static final String FILENAME = "fileName";//文件名
         public static final String TIMESTAMP = "timestamp";//时间戳
+        public static final String FILEID = "fid";//文件id
+    }
+
+    public static class DelStatus{
+
+        /**
+         * 删除
+         */
+        public static final int del =  0;
+
+        /**
+         * 正常
+         */
+        public static final int common = 1;
     }
 
     public static class MineType {

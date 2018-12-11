@@ -12,6 +12,8 @@ public interface FileInfoBaseMapper {
 
     int updateFileInfo(FileInfo object);
 
+    int update(FileInfo.UpdateBuilder object);
+
     List<FileInfo> queryFileInfo(FileInfo object);
 
     FileInfo queryFileInfoLimit1(FileInfo object);

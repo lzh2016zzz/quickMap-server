@@ -53,12 +53,11 @@ public interface FileService {
     /**
      * 删除文件
      *
-     * @param group
-     * @param path
+     * @param delPath
      * @return
      */
-    @RequestMapping(value = "/file/del/{group}/{path}")
-    String delete(@PathVariable("group") String group, @PathVariable("path") String path);
+    @RequestMapping(value = "/file/del/{delPath}")
+    String delete(@PathVariable("delPath") String delPath);
 
     /**
      * 根据名称精确搜索

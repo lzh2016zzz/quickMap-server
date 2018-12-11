@@ -33,13 +33,12 @@ public class OperatorController extends BaseController {
     /**
      * 删除文件
      *
-     * @param group
-     * @param path
+     * @param delPath
      * @return
      */
-    @RequestMapping(value = "/del/{group}/{path}")
-    public String del(@PathVariable("group") String group, @PathVariable("path") String path) {
-        return fileService.delete(group, path);
+    @RequestMapping(value = "/file/del/{delPath}")
+    String delete(@PathVariable("delPath") String delPath) {
+        return fileService.delete(delPath);
     }
 
     /**

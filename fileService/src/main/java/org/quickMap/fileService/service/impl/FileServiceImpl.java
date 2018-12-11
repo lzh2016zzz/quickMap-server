@@ -5,15 +5,18 @@ import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.quickMap.Utils.EncryptDes;
 import org.quickMap.Utils.FileOperatorUtil;
+import org.quickMap.constant.FileServiceConstant;
 import org.quickMap.constant.FileServiceConstant.Meta;
 import org.quickMap.fileService.cfg.FdfsConstant;
-import org.quickMap.fileService.model.FileInfo;
-import org.quickMap.fileService.model.vo.FileInfoVo;
+import org.quickMap.fileService.model.FileInfoData;
 import org.quickMap.fileService.service.IFileService;
 import org.quickmap.storageService.dao.FileInfoMapper;
+import org.quickmap.storageService.dao.model.FileInfo;
 import org.quickmap.storageService.service.IFilePrefixSuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.Base64Utils;
@@ -22,7 +25,6 @@ import org.springframework.util.StringUtils;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 
@@ -30,10 +32,10 @@ import java.util.Set;
 public class FileServiceImpl implements IFileService {
 
     @Autowired
-    protected FastFileStorageClient storageClient;
+    protected FastFileStorageClient client;
 
     @Autowired
-    protected IFilePrefixSuggestionService suggestionService;
+    protected IFilePrefixSuggestionService sug;
 
     @Autowired
     protected FileInfoMapper fileInfoMapper;
@@ -41,32 +43,36 @@ public class FileServiceImpl implements IFileService {
     @Autowired
     protected FdfsConstant fdfsConstant;
 
+    @Value("${des.seed}")
+    protected String desSeed;
+
     @Override
-    public FileInfo uploadFile(InputStream file, String uploadFileName, long fileLength) throws Exception {
-        return uploadFile(file, uploadFileName, fileLength, "sys");
+    public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength) throws Exception {
+        return uploadFile(file, uploadFileName, fileLength, 0);
     }
 
     @Override
-    public FileInfo uploadFile(InputStream file, String uploadFileName, long fileLength, String author) throws Exception {
+    public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength, Integer author) throws Exception {
         Assert.hasText(uploadFileName, "文件名不能为空");
         Assert.notNull(file, "文件不能为空");
         Set<MetaData> metaData;
-        FileInfoVo fileInfo = new FileInfoVo();
-        fileInfo.setFilename(uploadFileName);//文件名
-        fileInfo.setSize(fileLength);//文件大小
-        fileInfo.setAuthor(author);//创建者
-        fileInfo.setTimestamp(System.currentTimeMillis());//时间戳
+        FileInfoData fileInfoData = new FileInfoData();
+        fileInfoData.setFilename(uploadFileName);//文件名
+        fileInfoData.setSize(fileLength);//文件大小
+        fileInfoData.setAuthor(author);//创建者
+        fileInfoData.setTimestamp(System.currentTimeMillis());//时间戳
 
-        StorePath storePath = storageClient.uploadFile(file, fileLength, genStoreFileName(uploadFileName), (metaData = genMeta(fileInfo)));
-        fileInfo.setPath(fdfsConstant.getDownloadServer() + storePath.getFullPath());//下载地址
-        fileInfo.setDelPath(storePath.getGroup().concat("/").concat(FileOperatorUtil.encodePath(storePath.getPath())));//删除链接
+        StorePath storePath = client.uploadFile(file, fileLength, uploadFileName, (metaData = genMeta(fileInfoData)));
+        fileInfoData.setDownloadUrl(fdfsConstant.getDownloadServer() + storePath.getFullPath() + "?attname=" + uploadFileName);//下载地址
+        fileInfoData.setPath(storePath.getFullPath());
+        fileInfoData.setDelParam(new EncryptDes(desSeed).Encrypt(String.valueOf(insertRecord(fileInfoData))));//删除链接
+        sug.addSugKey(metaData, uploadFileName);
 
-        suggestionService.addSugKey(metaData, uploadFileName);
-        return fileInfo;
+        return fileInfoData;
     }
 
     @Override
-    public FileInfo uploadB64File(String b64, String uploadFileName,String author) throws Exception {
+    public FileInfoData uploadB64File(String b64, String uploadFileName, Integer author) throws Exception {
         Assert.hasText(uploadFileName, "文件名不能为空");
         Assert.hasText(b64, "base64不能为空");
         byte[] b = Base64Utils.decodeFromString(b64);
@@ -76,8 +82,8 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public FileInfo uploadB64File(String b64, String uploadFileName) throws Exception {
-        return uploadB64File(b64,uploadFileName,"sys");
+    public FileInfoData uploadB64File(String b64, String uploadFileName) throws Exception {
+        return uploadB64File(b64,uploadFileName,0);
     }
 
     @Override
@@ -89,25 +95,18 @@ public class FileServiceImpl implements IFileService {
     @Override
     public byte[] downloadFile(StorePath storePath) {
         Assert.notNull(storePath, "存储路径不能为空");
-        return storageClient.downloadFile(storePath.getGroup(), storePath.getPath(), new DownloadByteArray());
+        return client.downloadFile(storePath.getGroup(), storePath.getPath(), new DownloadByteArray());
     }
 
     @Override
-    public void deleteFile(StorePath storePath) {
-        Assert.notNull(storePath, "存储路径不能为空");
-        Optional<MetaData> metaData = storageClient.getMetadata(storePath.getGroup(), storePath.getPath()).stream().filter(e -> Meta.FILENAME.equals(e.getName())).findFirst();
-        if (metaData.isPresent()) {
-            storageClient.deleteFile(storePath.getGroup(), storePath.getPath());
-            fileInfoMapper.deleteByPath(storePath.getFullPath());
+    public void deleteFile(String delParam)throws Exception{
+        Integer id = Integer.valueOf(new EncryptDes(desSeed).Decrypt(delParam));
+        FileInfo fileInfo = fileInfoMapper.queryFileInfoLimit1(FileInfo.QueryBuild().id(id));
+        if(fileInfo != null) {
+            logicalDelete(fileInfo.getId());
+            client.deleteFile(fileInfo.getPath());
         }
     }
-
-    @Override
-    public void deleteFile(String fullPath) {
-        Assert.hasText(fullPath, "路径不能为空");
-        deleteFile(getStorePath(fullPath));
-    }
-
 
     /**
      * 获取路径对象
@@ -134,10 +133,9 @@ public class FileServiceImpl implements IFileService {
      *
      * @return
      */
-    protected Set<MetaData> genMeta(FileInfo fileInfo) {
+    protected Set<MetaData> genMeta(FileInfoData fileInfoData) {
         Set<MetaData> metaDataSet = new HashSet<>();
-        metaDataSet.add(new MetaData(Meta.AUTHOR, fileInfo.getAuthor()));
-        metaDataSet.add(new MetaData(Meta.FILENAME, fileInfo.getFilename()));
+        metaDataSet.add(new MetaData(Meta.FILENAME, fileInfoData.getFilename()));
         return metaDataSet;
     }
 
@@ -155,6 +153,31 @@ public class FileServiceImpl implements IFileService {
             String suffix = i != -1 ? original.substring(i) : "";
             return DigestUtils.sha1Hex(s) + suffix;
         } else return "";
+    }
+
+    /**
+     * 添加一条记录
+     * @param fileInfoData
+     */
+    protected int insertRecord(FileInfoData fileInfoData){
+        FileInfo $fileInfo = new FileInfo();
+        $fileInfo.setAuthor(fileInfoData.getAuthor());
+        $fileInfo.setFilename(fileInfoData.getFilename());
+        $fileInfo.setPath(fileInfoData.getPath());
+        $fileInfo.setSize(fileInfoData.getSize());
+        $fileInfo.setTimestamp(fileInfoData.getTimestamp());
+        fileInfoMapper.insertFileInfo($fileInfo);
+        return $fileInfo.getId();
+    }
+
+    /**
+     * 逻辑删除
+     * @param id
+     */
+    protected void logicalDelete(int id){
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.setIsdel(FileServiceConstant.DelStatus.del);
+        fileInfoMapper.update(new FileInfo.UpdateBuilder().set(fileInfo).where(FileInfo.ConditionBuild().idList(id)).build());
     }
 
 }

@@ -1,7 +1,7 @@
 package org.quickMap.fileService;
 
 import org.quickMap.base.BaseController;
-import org.quickMap.fileService.model.FileInfo;
+import org.quickMap.fileService.model.FileInfoData;
 import org.quickmap.storageService.dao.FileInfoMapper;
 import org.quickmap.storageService.service.IFilePrefixSuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,7 @@ public class FileSearchController extends BaseController {
 
     @RequestMapping("/{fileName}")
     public String search(@PathVariable("fileName") String fileName) {
-        List<FileInfo> f = dataService.findByFileName(fileName);
-        if(f == null || f.size() == 0){
-            suggestionService.deleteSugKey(fileName);
-        }
-        return jsonRender(f);
+        return null;
     }
 
     /**

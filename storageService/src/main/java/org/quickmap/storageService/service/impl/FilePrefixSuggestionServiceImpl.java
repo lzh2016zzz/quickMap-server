@@ -10,6 +10,7 @@ import org.quickmap.storageService.cfg.RedisConstant;
 import org.quickmap.storageService.service.IFilePrefixSuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
@@ -22,7 +23,7 @@ import java.util.*;
 import static javax.script.ScriptEngine.FILENAME;
 import static org.quickMap.constant.FileServiceConstant.Meta.TIMESTAMP;
 
-@Component
+@Service
 public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionService {
 
     public static final int maxSuggestions = 5;

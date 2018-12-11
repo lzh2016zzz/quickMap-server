@@ -1,11 +1,9 @@
 package org.quickMap.fileService.service;
 
-import com.github.tobato.fastdfs.domain.MetaData;
 import com.github.tobato.fastdfs.domain.StorePath;
-import org.quickMap.fileService.model.FileInfo;
+import org.quickMap.fileService.model.FileInfoData;
 
 import java.io.InputStream;
-import java.util.Set;
 
 /**
  * 文件服务
@@ -21,7 +19,7 @@ public interface IFileService {
      * @return
      * @throws Exception
      */
-    FileInfo uploadFile(InputStream file, String uploadFileName, long fileLength) throws Exception;
+    FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength) throws Exception;
 
     /**
      * 上传文件
@@ -33,7 +31,7 @@ public interface IFileService {
      * @return
      * @throws Exception
      */
-    FileInfo uploadFile(InputStream file, String uploadFileName, long fileLength, String author) throws Exception;
+    FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength, Integer author) throws Exception;
 
     /**
      * 上传base64
@@ -43,7 +41,7 @@ public interface IFileService {
      * @return
      * @throws Exception
      */
-    FileInfo uploadB64File(String b64, String uploadFileName) throws Exception;
+    FileInfoData uploadB64File(String b64, String uploadFileName) throws Exception;
 
     /**
      * 上传base64
@@ -54,7 +52,7 @@ public interface IFileService {
      * @return
      * @throws Exception
      */
-    FileInfo uploadB64File(String b64, String uploadFileName,String author) throws Exception;
+    FileInfoData uploadB64File(String b64, String uploadFileName, Integer author) throws Exception;
 
     /**
      * 下载文件
@@ -77,17 +75,10 @@ public interface IFileService {
     /**
      * 删除文件
      *
-     * @param storePath
+     * @param delParam
      * @throws Exception
      */
-    void deleteFile(StorePath storePath) throws Exception;
+    void deleteFile(String delParam) throws Exception;
 
 
-    /**
-     * 删除文件
-     *
-     * @param fullPath
-     * @throws Exception
-     */
-    void deleteFile(String fullPath) throws Exception;
 }
