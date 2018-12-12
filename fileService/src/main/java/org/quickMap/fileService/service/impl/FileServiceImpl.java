@@ -156,7 +156,7 @@ public class FileServiceImpl implements IFileService {
     }
 
     /**
-     * 添加一条记录
+     * 添加一条记录,返回自增key值
      * @param fileInfoData
      */
     protected int insertRecord(FileInfoData fileInfoData){
