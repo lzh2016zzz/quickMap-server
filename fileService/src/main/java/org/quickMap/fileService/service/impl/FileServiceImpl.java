@@ -6,7 +6,6 @@ import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.quickMap.Utils.EncryptDes;
-import org.quickMap.Utils.FileOperatorUtil;
 import org.quickMap.constant.FileServiceConstant;
 import org.quickMap.constant.FileServiceConstant.Meta;
 import org.quickMap.fileService.cfg.FdfsConstant;

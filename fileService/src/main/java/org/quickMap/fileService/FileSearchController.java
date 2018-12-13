@@ -3,6 +3,7 @@ package org.quickMap.fileService;
 import org.quickMap.base.BaseController;
 import org.quickMap.fileService.model.FileInfoData;
 import org.quickmap.storageService.dao.FileInfoMapper;
+import org.quickmap.storageService.dao.model.FileInfo;
 import org.quickmap.storageService.service.IFilePrefixSuggestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ public class FileSearchController extends BaseController {
 
     @RequestMapping("/{fileName}")
     public String search(@PathVariable("fileName") String fileName) {
-        return null;
+        return jsonRender(fileInfoMapper.queryFileInfo(FileInfo.QueryBuild().filename(fileName).build()));
     }
 
     /**
