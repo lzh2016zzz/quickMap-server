@@ -51,7 +51,7 @@ public class FileOperatorUtil {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public static String encodePath(String path) throws UnsupportedEncodingException {
+    public static String encodePath(String path) {
         return Base64Utils.encodeToUrlSafeString(path.getBytes(StandardCharsets.UTF_8));
     }
 
