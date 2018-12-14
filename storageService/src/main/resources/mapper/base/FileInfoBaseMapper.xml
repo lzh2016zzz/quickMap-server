@@ -32,6 +32,9 @@
                     <if test="thumbImagePath!=null">
                         `thumbImagePath`,
                     </if>
+                    <if test="suffix!=null">
+                        `suffix`,
+                    </if>
         </trim>
         )
         VALUES
@@ -60,6 +63,9 @@
                 </if>
                 <if test="thumbImagePath!=null">
                     #{thumbImagePath},
+                </if>
+                <if test="suffix!=null">
+                    #{suffix},
                 </if>
         </trim>
         )
@@ -93,6 +99,9 @@
             <if test="thumbImagePath != null and thumbImagePath!=''">
                 `thumbImagePath` = #{thumbImagePath},
             </if>
+            <if test="suffix != null and suffix!=''">
+                `suffix` = #{suffix},
+            </if>
         </trim>
         WHERE
         <trim suffixOverrides="and">
@@ -124,6 +133,9 @@
         </if>
         <if test="set.thumbImagePath != null and set.thumbImagePath!=''">
             `thumbImagePath` = #{set.thumbImagePath},
+        </if>
+        <if test="set.suffix != null and set.suffix!=''">
+            `suffix` = #{set.suffix},
         </if>
         </trim>
         <trim prefix="where" suffixOverrides="and | or">
@@ -247,6 +259,26 @@
                 </foreach>
                 ) and
             </if>
+                <if test="where.suffixList != null">
+                    `suffix` in
+                    <foreach collection="where.suffixList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzySuffix!=null and where.fuzzySuffix.size()>0">
+                (
+                <foreach collection="where.fuzzySuffix"  separator="or" item="item">
+                    `Suffix` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzySuffix!=null and where.rightFuzzySuffix.size()>0">
+                (
+                <foreach collection="where.rightFuzzySuffix"  separator="or" item="item">
+                    `Suffix` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
         </trim>
     </update>
 
@@ -260,6 +292,7 @@
         <result property="author" column="author"/>
         <result property="isdel" column="isdel"/>
         <result property="thumbImagePath" column="thumbImagePath"/>
+        <result property="suffix" column="suffix"/>
     </resultMap>
 
 
@@ -291,6 +324,9 @@
             </if>
             <if test="thumbImagePath != null and thumbImagePath!=''">
                 `thumbImagePath` = #{thumbImagePath} and
+            </if>
+            <if test="suffix != null and suffix!=''">
+                `suffix` = #{suffix} and
             </if>
             <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
                 <if test="idList != null">
@@ -413,6 +449,26 @@
                     </foreach>
                     ) and
                 </if>
+                <if test="suffixList != null">
+                    `suffix` in
+                    <foreach collection="suffixList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzySuffix!=null and fuzzySuffix.size()>0">
+                    (
+                    <foreach collection="fuzzySuffix"  separator="or" item="item">
+                        `Suffix` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySuffix!=null and rightFuzzySuffix.size()>0">
+                    (
+                    <foreach collection="rightFuzzySuffix"  separator="or" item="item">
+                        `Suffix` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
             </if>
         </trim>
     </select>
@@ -445,6 +501,9 @@
             </if>
             <if test="thumbImagePath != null and thumbImagePath!=''">
                 `thumbImagePath` = #{thumbImagePath} and
+            </if>
+            <if test="suffix != null and suffix!=''">
+                `suffix` = #{suffix} and
             </if>
             <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
                     <if test="idList != null">
@@ -567,6 +626,26 @@
                     </foreach>
                     ) and
                 </if>
+                    <if test="suffixList != null">
+                        `suffix` in
+                        <foreach collection="suffixList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzySuffix!=null and fuzzySuffix.size()>0">
+                    (
+                    <foreach collection="fuzzySuffix"  separator="or" item="item">
+                        `Suffix` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySuffix!=null and rightFuzzySuffix.size()>0">
+                    (
+                    <foreach collection="rightFuzzySuffix"  separator="or" item="item">
+                        `Suffix` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
             </if>
         </trim>
         limit 1
@@ -582,6 +661,7 @@
         `author`,
         `isdel`,
         `thumbImagePath`,
+        `suffix`,
         </trim>
     </sql>
 
@@ -626,6 +706,9 @@
                     <if test="fetchFields.fetchFields.thumbImagePath==true">
                         `thumbImagePath`,
                     </if>
+                    <if test="fetchFields.fetchFields.suffix==true">
+                        `suffix`,
+                    </if>
                     </if>
                     <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
                     <if test="fetchFields.excludeFields.id==null">
@@ -651,6 +734,9 @@
                     </if>
                     <if test="fetchFields.excludeFields.thumbImagePath==null">
                         `thumbImagePath`,
+                    </if>
+                    <if test="fetchFields.excludeFields.suffix==null">
+                        `suffix`,
                     </if>
                     </if>
                     <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">

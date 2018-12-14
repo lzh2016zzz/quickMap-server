@@ -82,6 +82,7 @@ public class FileServiceImpl implements IFileService {
         fileInfo.setTimestamp(System.currentTimeMillis());//时间戳
         fileInfo.setAuthor(author);//创建者
         fileInfo.setFilename(uploadFileName);//文件名
+        fileInfo.setSuffix(FileOperatorUtil.getSuffix(uploadFileName));//后缀
         fileInfo.setThumbImagePath(genThumbImage ? thumbImageCfg.getThumbImagePath(storePath.getFullPath()) : null);
         sug.addSugKey(metaData, uploadFileName);
 

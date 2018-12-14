@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class FileInfo implements Serializable {
 
-    private static final long serialVersionUID = 1544761635123L;
+    private static final long serialVersionUID = 1544787513267L;
 
 
     /**
@@ -62,6 +62,12 @@ public class FileInfo implements Serializable {
     */
     private String thumbImagePath;
 
+    /**
+    * 
+    * isNullAble:1
+    */
+    private String suffix;
+
 
     public void setId(Integer id){this.id = id;}
 
@@ -94,6 +100,10 @@ public class FileInfo implements Serializable {
     public void setThumbImagePath(String thumbImagePath){this.thumbImagePath = thumbImagePath;}
 
     public String getThumbImagePath(){return this.thumbImagePath;}
+
+    public void setSuffix(String suffix){this.suffix = suffix;}
+
+    public String getSuffix(){return this.suffix;}
     @Override
     public String toString() {
         return "FileInfo{" +
@@ -105,6 +115,7 @@ public class FileInfo implements Serializable {
                 "author='" + author + '\'' +
                 "isdel='" + isdel + '\'' +
                 "thumbImagePath='" + thumbImagePath + '\'' +
+                "suffix='" + suffix + '\'' +
             '}';
     }
 
@@ -249,6 +260,18 @@ public class FileInfo implements Serializable {
         private List<String> rightFuzzyThumbImagePath;
 
         public List<String> getRightFuzzyThumbImagePath(){return this.rightFuzzyThumbImagePath;}
+        private List<String> suffixList;
+
+        public List<String> getSuffixList(){return this.suffixList;}
+
+
+        private List<String> fuzzySuffix;
+
+        public List<String> getFuzzySuffix(){return this.fuzzySuffix;}
+
+        private List<String> rightFuzzySuffix;
+
+        public List<String> getRightFuzzySuffix(){return this.rightFuzzySuffix;}
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -592,6 +615,51 @@ public class FileInfo implements Serializable {
             setFetchFields("excludeFields","thumbImagePath");
             return this;
         }
+
+        public QueryBuilder fuzzySuffix (List<String> fuzzySuffix){
+            this.fuzzySuffix = fuzzySuffix;
+            return this;
+        }
+
+        public QueryBuilder fuzzySuffix (String ... fuzzySuffix){
+            this.fuzzySuffix = solveNullList(fuzzySuffix);
+            return this;
+        }
+
+        public QueryBuilder rightFuzzySuffix (List<String> rightFuzzySuffix){
+            this.rightFuzzySuffix = rightFuzzySuffix;
+            return this;
+        }
+
+        public QueryBuilder rightFuzzySuffix (String ... rightFuzzySuffix){
+            this.rightFuzzySuffix = solveNullList(rightFuzzySuffix);
+            return this;
+        }
+
+        public QueryBuilder suffix(String suffix){
+            setSuffix(suffix);
+            return this;
+        }
+
+        public QueryBuilder suffixList(String ... suffix){
+            this.suffixList = solveNullList(suffix);
+            return this;
+        }
+
+        public QueryBuilder suffixList(List<String> suffix){
+            this.suffixList = suffix;
+            return this;
+        }
+
+        public QueryBuilder fetchSuffix(){
+            setFetchFields("fetchFields","suffix");
+            return this;
+        }
+
+        public QueryBuilder excludeSuffix(){
+            setFetchFields("excludeFields","suffix");
+            return this;
+        }
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -731,6 +799,18 @@ public class FileInfo implements Serializable {
         private List<String> rightFuzzyThumbImagePath;
 
         public List<String> getRightFuzzyThumbImagePath(){return this.rightFuzzyThumbImagePath;}
+        private List<String> suffixList;
+
+        public List<String> getSuffixList(){return this.suffixList;}
+
+
+        private List<String> fuzzySuffix;
+
+        public List<String> getFuzzySuffix(){return this.fuzzySuffix;}
+
+        private List<String> rightFuzzySuffix;
+
+        public List<String> getRightFuzzySuffix(){return this.rightFuzzySuffix;}
 
         public ConditionBuilder idBetWeen(Integer idSt,Integer idEd){
             this.idSt = idSt;
@@ -952,6 +1032,36 @@ public class FileInfo implements Serializable {
             return this;
         }
 
+        public ConditionBuilder fuzzySuffix (List<String> fuzzySuffix){
+            this.fuzzySuffix = fuzzySuffix;
+            return this;
+        }
+
+        public ConditionBuilder fuzzySuffix (String ... fuzzySuffix){
+            this.fuzzySuffix = solveNullList(fuzzySuffix);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzySuffix (List<String> rightFuzzySuffix){
+            this.rightFuzzySuffix = rightFuzzySuffix;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzySuffix (String ... rightFuzzySuffix){
+            this.rightFuzzySuffix = solveNullList(rightFuzzySuffix);
+            return this;
+        }
+
+        public ConditionBuilder suffixList(String ... suffix){
+            this.suffixList = solveNullList(suffix);
+            return this;
+        }
+
+        public ConditionBuilder suffixList(List<String> suffix){
+            this.suffixList = suffix;
+            return this;
+        }
+
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -1006,6 +1116,10 @@ public class FileInfo implements Serializable {
         }
         public Builder thumbImagePath(String thumbImagePath){
             this.obj.setThumbImagePath(thumbImagePath);
+            return this;
+        }
+        public Builder suffix(String suffix){
+            this.obj.setSuffix(suffix);
             return this;
         }
         public FileInfo build(){return obj;}
