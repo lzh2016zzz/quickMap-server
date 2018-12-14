@@ -19,15 +19,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
+
 /**
- * 功能描述: 这里注意二进制转十六进制，十六进制转二进制的必要性
-
- * @version 2.4.0
- * @Copyright (c) 2002-2013 All rights reserved.
- * @create 2012-12-13 上午11:11:02
- **/
-
-
+ * des加密/解密
+ */
 public class EncryptDes {
 
     private Logger logger = LoggerFactory.getLogger(EncryptDes.class);
@@ -41,13 +36,18 @@ public class EncryptDes {
 
     private Cipher cipher;
 
-    public EncryptDes(String key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException {
-        //KeySpec组成加密密钥的密钥内容的（透明）规范
-        keySpec = new DESKeySpec(key.getBytes(StandardCharsets.UTF_8));
-        keyFactory = SecretKeyFactory.getInstance("DES");
-        // key的长度不能够小于8位字节
-        secretKey = keyFactory.generateSecret(keySpec);
-        cipher = Cipher.getInstance("DES");
+    public EncryptDes(String key) {
+        try {
+            //KeySpec组成加密密钥的密钥内容的（透明）规范
+            keySpec = new DESKeySpec(key.getBytes(StandardCharsets.UTF_8));
+            keyFactory = SecretKeyFactory.getInstance("DES");
+            // key的长度不能够小于8位字节
+            secretKey = keyFactory.generateSecret(keySpec);
+            cipher = Cipher.getInstance("DES");
+        }catch (Exception e){
+            logger.error("初始化加密工具异常",e);
+            throw new IllegalArgumentException("加密异常",e);
+        }
     }
 
     /**

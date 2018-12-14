@@ -93,6 +93,7 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
         try (Jedis conn = getJedisPool().getResource()) {
             BinaryClient client = conn.getClient();
             client.sendCommand(AutoCompleter.Command.SUGDEL, config.getFsIndexName(), fileName);
+            //logger.info("删除key结果:{}" + client.getStatusCodeReply());
         }
     }
 

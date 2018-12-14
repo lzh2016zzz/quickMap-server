@@ -124,6 +124,7 @@ public class FileServiceImpl implements IFileService {
         if (fileInfo != null) {
             logicalDelete(fileInfo.getId());
             client.deleteFile(fileInfo.getPath());
+            if(fileInfo.getThumbImagePath() != null) client.deleteFile(fileInfo.getThumbImagePath());
         }
     }
 
@@ -161,12 +162,7 @@ public class FileServiceImpl implements IFileService {
      */
     protected EncryptDes getEncrypter() {
         if (encrypter == null) {
-            try {
-                encrypter = new EncryptDes(desSeed);
-            } catch (Exception e) {
-                logger.error("初始化加密工具异常", e);
-                throw new IllegalArgumentException("初始化加密工具异常", e);
-            }
+            encrypter = new EncryptDes(desSeed);
         }
         return encrypter;
     }
