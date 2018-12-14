@@ -6,6 +6,8 @@ package org.quickMap.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -39,9 +41,9 @@ public class EncryptDes {
 
     private Cipher cipher;
 
-    public EncryptDes(String key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException{
+    public EncryptDes(String key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, UnsupportedEncodingException {
         //KeySpec组成加密密钥的密钥内容的（透明）规范
-        keySpec = new DESKeySpec(key.getBytes());
+        keySpec = new DESKeySpec(key.getBytes(StandardCharsets.UTF_8));
         keyFactory = SecretKeyFactory.getInstance("DES");
         // key的长度不能够小于8位字节
         secretKey = keyFactory.generateSecret(keySpec);
@@ -61,7 +63,7 @@ public class EncryptDes {
         // 根据密钥，对Cipher对象进行初始化，ENCRYPT_MODE表示加密模式
         try {
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] src = str.getBytes();
+            byte[] src = str.getBytes(StandardCharsets.UTF_8);
             // 加密，结果保存进cipherByte
             byte[] encryByte = cipher.doFinal(src);
             String encryStr = parseByte2HexStr(encryByte);
@@ -85,7 +87,7 @@ public class EncryptDes {
             // 根据密钥，对Cipher对象进行初始化，DECRYPT_MODE表示加密模式
             byte[] encryByte = parseHexStr2Byte(str);
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            return new String(cipher.doFinal(encryByte));
+            return new String(cipher.doFinal(encryByte), StandardCharsets.UTF_8);
         } catch (Exception e) {
             logger.error("解密异常",e);
             throw new IllegalArgumentException("解密异常");

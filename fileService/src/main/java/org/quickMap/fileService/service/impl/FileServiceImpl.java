@@ -74,8 +74,8 @@ public class FileServiceImpl implements IFileService {
         Set<MetaData> metaData = genMeta(fileInfo);
 
         StorePath storePath = genThumbImage && isSupportThumbImageType(uploadFileName) ?
-                client.uploadImageAndCrtThumbImage(file, fileLength, FileOperatorUtil.getSuffix(uploadFileName), metaData):
-                client.uploadFile(file,fileLength,genStoreFileName(uploadFileName), metaData);
+                client.uploadImageAndCrtThumbImage(file, fileLength, FileOperatorUtil.getSuffix(uploadFileName), metaData) :
+                client.uploadFile(file, fileLength, genStoreFileName(uploadFileName), metaData);
 
         fileInfo.setSize(fileLength);//文件大小
         fileInfo.setPath(storePath.getFullPath());//完整路径
@@ -145,10 +145,11 @@ public class FileServiceImpl implements IFileService {
 
     /**
      * 是否支持生成缩略图
+     *
      * @param uploadFileName
      * @return
      */
-    protected boolean isSupportThumbImageType(String uploadFileName){
+    protected boolean isSupportThumbImageType(String uploadFileName) {
         final List<String> list = Arrays.asList("jpeg", "jpg", "bmp", "png");
         return list.indexOf(FileOperatorUtil.getSuffix(uploadFileName)) > -1;
     }
@@ -244,18 +245,17 @@ public class FileServiceImpl implements IFileService {
 
 
     protected FileInfoData solveFileInfoData(FileInfo info) {
-            FileInfoData data = new FileInfoData();
-            data.setAuthor(info.getAuthor());
-            data.setSize(info.getSize());
-            data.setTimestamp(info.getTimestamp());
-            data.setDelParam(getDelParam(info.getId()));
-            data.setFilename(info.getFilename());
-            data.setPath(info.getPath());
-            data.setDownloadUrl(getDownloadUrl(info.getFilename(), info.getPath()));
-            data.setThumbImagePath(info.getThumbImagePath() != null ? fdfsConstant.getDownloadServer() + info.getThumbImagePath() : null);
-            return data;
+        FileInfoData data = new FileInfoData();
+        data.setAuthor(info.getAuthor());
+        data.setSize(info.getSize());
+        data.setTimestamp(info.getTimestamp());
+        data.setDelParam(getDelParam(info.getId()));
+        data.setFilename(info.getFilename());
+        data.setPath(info.getPath());
+        data.setDownloadUrl(getDownloadUrl(info.getFilename(), info.getPath()));
+        data.setThumbImagePath(info.getThumbImagePath() != null ? fdfsConstant.getDownloadServer() + info.getThumbImagePath() : null);
+        return data;
     }
-
 
 
     /**
