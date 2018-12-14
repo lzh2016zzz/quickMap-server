@@ -119,7 +119,7 @@ public class FileServiceImpl implements IFileService {
     @Override
     public void deleteFile(String delParam) {
         Assert.notNull(delParam, "删除参数不能为空");
-        Integer id = Integer.valueOf(getEncrypter().Decrypt(delParam));
+        Integer id = Integer.valueOf(getEncrypter().decrypt(delParam));
         FileInfo fileInfo = fileInfoMapper.queryFileInfoLimit1(FileInfo.QueryBuild().id(id));
         if (fileInfo != null) {
             logicalDelete(fileInfo.getId());
@@ -206,7 +206,7 @@ public class FileServiceImpl implements IFileService {
         if (param instanceof String) {
             Assert.hasText((String) param, "参数不能为空");
         }
-        return getEncrypter().Encrypt(String.valueOf(param));
+        return getEncrypter().encrypt(String.valueOf(param));
     }
 
 

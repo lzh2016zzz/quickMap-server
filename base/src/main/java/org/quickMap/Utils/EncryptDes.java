@@ -58,7 +58,7 @@ public class EncryptDes {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String Encrypt(String str) {
+    public String encrypt(String str) {
 
         // 根据密钥，对Cipher对象进行初始化，ENCRYPT_MODE表示加密模式
         try {
@@ -82,7 +82,7 @@ public class EncryptDes {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String Decrypt(String str) {
+    public String decrypt(String str) {
         try {
             // 根据密钥，对Cipher对象进行初始化，DECRYPT_MODE表示加密模式
             byte[] encryByte = parseHexStr2Byte(str);
