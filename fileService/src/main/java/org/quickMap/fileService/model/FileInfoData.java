@@ -9,6 +9,7 @@ public class FileInfoData {
     private String downloadUrl;
     private long timestamp;
     private Integer author;
+    private String thumbImagePath;
 
     public String getDelParam() {
         return delParam;
@@ -65,5 +66,13 @@ public class FileInfoData {
 
     public void setDownloadUrl(String downloadUrl) {
         this.downloadUrl = downloadUrl;
+    }
+
+    public String getThumbImagePath() {
+        return thumbImagePath;
+    }
+
+    public void setThumbImagePath(String thumbImagePath) {
+        this.thumbImagePath = thumbImagePath;
     }
 }

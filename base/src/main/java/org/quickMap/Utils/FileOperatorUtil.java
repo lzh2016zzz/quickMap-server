@@ -2,6 +2,7 @@ package org.quickMap.Utils;
 
 import org.quickMap.constant.FileServiceConstant;
 import org.springframework.util.Base64Utils;
+import org.springframework.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -16,6 +17,10 @@ public class FileOperatorUtil {
 
     static {
         mineTypeSuffixMap = createMineTypeSuffixMap();
+    }
+
+    public static String getSuffix(String s){
+       return StringUtils.hasText(s) ? s.substring(s.indexOf(".") + 1) : "";
     }
 
     /**

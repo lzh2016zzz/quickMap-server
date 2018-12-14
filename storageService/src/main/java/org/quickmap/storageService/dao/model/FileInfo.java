@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class FileInfo implements Serializable {
 
-    private static final long serialVersionUID = 1544533626191L;
+    private static final long serialVersionUID = 1544761635123L;
 
 
     /**
@@ -56,6 +56,12 @@ public class FileInfo implements Serializable {
     */
     private Integer isdel;
 
+    /**
+    * 
+    * isNullAble:1
+    */
+    private String thumbImagePath;
+
 
     public void setId(Integer id){this.id = id;}
 
@@ -84,6 +90,10 @@ public class FileInfo implements Serializable {
     public void setIsdel(Integer isdel){this.isdel = isdel;}
 
     public Integer getIsdel(){return this.isdel;}
+
+    public void setThumbImagePath(String thumbImagePath){this.thumbImagePath = thumbImagePath;}
+
+    public String getThumbImagePath(){return this.thumbImagePath;}
     @Override
     public String toString() {
         return "FileInfo{" +
@@ -94,6 +104,7 @@ public class FileInfo implements Serializable {
                 "timestamp='" + timestamp + '\'' +
                 "author='" + author + '\'' +
                 "isdel='" + isdel + '\'' +
+                "thumbImagePath='" + thumbImagePath + '\'' +
             '}';
     }
 
@@ -226,6 +237,18 @@ public class FileInfo implements Serializable {
 
         public Integer getIsdelEd(){return this.isdelEd;}
 
+        private List<String> thumbImagePathList;
+
+        public List<String> getThumbImagePathList(){return this.thumbImagePathList;}
+
+
+        private List<String> fuzzyThumbImagePath;
+
+        public List<String> getFuzzyThumbImagePath(){return this.fuzzyThumbImagePath;}
+
+        private List<String> rightFuzzyThumbImagePath;
+
+        public List<String> getRightFuzzyThumbImagePath(){return this.rightFuzzyThumbImagePath;}
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -524,6 +547,51 @@ public class FileInfo implements Serializable {
             setFetchFields("excludeFields","isdel");
             return this;
         }
+
+        public QueryBuilder fuzzyThumbImagePath (List<String> fuzzyThumbImagePath){
+            this.fuzzyThumbImagePath = fuzzyThumbImagePath;
+            return this;
+        }
+
+        public QueryBuilder fuzzyThumbImagePath (String ... fuzzyThumbImagePath){
+            this.fuzzyThumbImagePath = solveNullList(fuzzyThumbImagePath);
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyThumbImagePath (List<String> rightFuzzyThumbImagePath){
+            this.rightFuzzyThumbImagePath = rightFuzzyThumbImagePath;
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyThumbImagePath (String ... rightFuzzyThumbImagePath){
+            this.rightFuzzyThumbImagePath = solveNullList(rightFuzzyThumbImagePath);
+            return this;
+        }
+
+        public QueryBuilder thumbImagePath(String thumbImagePath){
+            setThumbImagePath(thumbImagePath);
+            return this;
+        }
+
+        public QueryBuilder thumbImagePathList(String ... thumbImagePath){
+            this.thumbImagePathList = solveNullList(thumbImagePath);
+            return this;
+        }
+
+        public QueryBuilder thumbImagePathList(List<String> thumbImagePath){
+            this.thumbImagePathList = thumbImagePath;
+            return this;
+        }
+
+        public QueryBuilder fetchThumbImagePath(){
+            setFetchFields("fetchFields","thumbImagePath");
+            return this;
+        }
+
+        public QueryBuilder excludeThumbImagePath(){
+            setFetchFields("excludeFields","thumbImagePath");
+            return this;
+        }
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -651,6 +719,18 @@ public class FileInfo implements Serializable {
 
         public Integer getIsdelEd(){return this.isdelEd;}
 
+        private List<String> thumbImagePathList;
+
+        public List<String> getThumbImagePathList(){return this.thumbImagePathList;}
+
+
+        private List<String> fuzzyThumbImagePath;
+
+        public List<String> getFuzzyThumbImagePath(){return this.fuzzyThumbImagePath;}
+
+        private List<String> rightFuzzyThumbImagePath;
+
+        public List<String> getRightFuzzyThumbImagePath(){return this.rightFuzzyThumbImagePath;}
 
         public ConditionBuilder idBetWeen(Integer idSt,Integer idEd){
             this.idSt = idSt;
@@ -842,6 +922,36 @@ public class FileInfo implements Serializable {
             return this;
         }
 
+        public ConditionBuilder fuzzyThumbImagePath (List<String> fuzzyThumbImagePath){
+            this.fuzzyThumbImagePath = fuzzyThumbImagePath;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyThumbImagePath (String ... fuzzyThumbImagePath){
+            this.fuzzyThumbImagePath = solveNullList(fuzzyThumbImagePath);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyThumbImagePath (List<String> rightFuzzyThumbImagePath){
+            this.rightFuzzyThumbImagePath = rightFuzzyThumbImagePath;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyThumbImagePath (String ... rightFuzzyThumbImagePath){
+            this.rightFuzzyThumbImagePath = solveNullList(rightFuzzyThumbImagePath);
+            return this;
+        }
+
+        public ConditionBuilder thumbImagePathList(String ... thumbImagePath){
+            this.thumbImagePathList = solveNullList(thumbImagePath);
+            return this;
+        }
+
+        public ConditionBuilder thumbImagePathList(List<String> thumbImagePath){
+            this.thumbImagePathList = thumbImagePath;
+            return this;
+        }
+
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -892,6 +1002,10 @@ public class FileInfo implements Serializable {
         }
         public Builder isdel(Integer isdel){
             this.obj.setIsdel(isdel);
+            return this;
+        }
+        public Builder thumbImagePath(String thumbImagePath){
+            this.obj.setThumbImagePath(thumbImagePath);
             return this;
         }
         public FileInfo build(){return obj;}

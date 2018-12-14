@@ -1,6 +1,10 @@
 package org.quickMap.constant;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class FileServiceConstant {
+
 
     public static class Meta {
 
@@ -89,8 +93,6 @@ public class FileServiceConstant {
                     //jpeg统一使用jpg
                     {".jpg", "image/jpeg"},
                     {".jpeg", "image/jpeg"},
-
-
                     {".bmp", "image/bmp"},
                     {".gif", "image/gif"},
                     {".png", "image/png"},

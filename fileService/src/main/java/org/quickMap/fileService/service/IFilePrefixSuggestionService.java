@@ -1,4 +1,4 @@
-package org.quickmap.storageService.service;
+package org.quickMap.fileService.service;
 
 import com.github.tobato.fastdfs.domain.MetaData;
 import io.redisearch.Suggestion;
@@ -17,7 +17,7 @@ public interface IFilePrefixSuggestionService {
      * @param metaData  元数据
      * @param fileName key
      */
-    void addSugKey(Set<MetaData> metaData,String fileName) throws Exception;
+    void addSugKey(Set<MetaData> metaData, String fileName) throws Exception;
 
     /**
      * 删除
@@ -33,4 +33,11 @@ public interface IFilePrefixSuggestionService {
      * @return
      */
     List<Suggestion> getSuggestions(String prefix);
+
+    /**
+     * 初始化自动补全数据
+     * @param keys
+     * @param rebuild
+     */
+    void initSugKeys(List<String> keys, boolean rebuild);
 }

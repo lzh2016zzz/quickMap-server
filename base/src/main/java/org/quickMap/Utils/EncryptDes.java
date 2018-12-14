@@ -3,6 +3,9 @@ package org.quickMap.Utils;
 /*
  * @(#) EncrypAES.java
  */
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -21,16 +24,20 @@ import javax.crypto.spec.DESKeySpec;
  * @Copyright (c) 2002-2013 All rights reserved.
  * @create 2012-12-13 上午11:11:02
  **/
+
+
 public class EncryptDes {
 
+    private Logger logger = LoggerFactory.getLogger(EncryptDes.class);
 
-    private SecretKeyFactory keyFactory = null;
+
+    private SecretKeyFactory keyFactory;
     // 生成加密密钥
-    private DESKeySpec keySpec = null;
+    private DESKeySpec keySpec;
 
-    private SecretKey secretKey = null;
+    private SecretKey secretKey;
 
-    private Cipher cipher = null;
+    private Cipher cipher;
 
     public EncryptDes(String key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException{
         //KeySpec组成加密密钥的密钥内容的（透明）规范
@@ -49,14 +56,20 @@ public class EncryptDes {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String Encrypt(String str) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public String Encrypt(String str) {
+
         // 根据密钥，对Cipher对象进行初始化，ENCRYPT_MODE表示加密模式
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        byte[] src = str.getBytes();
-        // 加密，结果保存进cipherByte
-        byte[] encryByte = cipher.doFinal(src);
-        String encryStr = parseByte2HexStr(encryByte);
-        return encryStr;
+        try {
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] src = str.getBytes();
+            // 加密，结果保存进cipherByte
+            byte[] encryByte = cipher.doFinal(src);
+            String encryStr = parseByte2HexStr(encryByte);
+            return encryStr;
+        } catch (Exception e) {
+            logger.error("加密异常",e);
+            throw new IllegalArgumentException("加密异常");
+        }
     }
 
     /**
@@ -67,18 +80,23 @@ public class EncryptDes {
      * @throws IllegalBlockSizeException
      * @throws BadPaddingException
      */
-    public String Decrypt(String str) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
-        // 根据密钥，对Cipher对象进行初始化，DECRYPT_MODE表示加密模式
-        byte[] encryByte = parseHexStr2Byte(str);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
-        return new String(cipher.doFinal(encryByte));
+    public String Decrypt(String str) {
+        try {
+            // 根据密钥，对Cipher对象进行初始化，DECRYPT_MODE表示加密模式
+            byte[] encryByte = parseHexStr2Byte(str);
+            cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            return new String(cipher.doFinal(encryByte));
+        } catch (Exception e) {
+            logger.error("解密异常",e);
+            throw new IllegalArgumentException("解密异常");
+        }
     }
 
     /**将二进制转换成16进制
      * @param buf
      * @return
      */
-    private static String parseByte2HexStr(byte buf[]) {
+    private static String parseByte2HexStr(byte[] buf) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < buf.length; i++) {
             String hex = Integer.toHexString(buf[i] & 0xFF);

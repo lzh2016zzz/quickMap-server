@@ -28,7 +28,7 @@ public interface FileService {
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    String upload(@RequestPart("file") MultipartFile files);
+    String upload(@RequestPart("file") MultipartFile files,@RequestParam(required = false) boolean thumbImage);
 
     /**
      * 上传base64
@@ -38,7 +38,7 @@ public interface FileService {
      * @throws Exception
      */
     @PostMapping("/file/uploadB64")
-    String uploadB64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName);
+    String uploadB64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName,@RequestParam(required = false) boolean thumbImage);
 
     /**
      * 下载文件
@@ -76,6 +76,14 @@ public interface FileService {
      */
     @RequestMapping(value = "/search/prefix/{prefix}")
     String prefix(@PathVariable("prefix") String prefix);
+
+    /**
+     * 初始化自动补全数据
+     * @param
+     * @return
+     */
+    @RequestMapping("/search/initAuto")
+    String initAuto(@RequestParam("rebuild") boolean rebuild) throws Exception;
 
     /**
      * 配置上传文件支持

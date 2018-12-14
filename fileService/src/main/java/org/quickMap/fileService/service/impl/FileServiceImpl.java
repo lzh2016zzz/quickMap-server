@@ -2,18 +2,22 @@ package org.quickMap.fileService.service.impl;
 
 import com.github.tobato.fastdfs.domain.MetaData;
 import com.github.tobato.fastdfs.domain.StorePath;
+import com.github.tobato.fastdfs.domain.ThumbImageConfig;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.quickMap.Utils.EncryptDes;
+import org.quickMap.Utils.FileOperatorUtil;
 import org.quickMap.constant.FileServiceConstant;
 import org.quickMap.constant.FileServiceConstant.Meta;
 import org.quickMap.fileService.cfg.FdfsConstant;
 import org.quickMap.fileService.model.FileInfoData;
+import org.quickMap.fileService.service.IFilePrefixSuggestionService;
 import org.quickMap.fileService.service.IFileService;
 import org.quickmap.storageService.dao.FileInfoMapper;
 import org.quickmap.storageService.dao.model.FileInfo;
-import org.quickmap.storageService.service.IFilePrefixSuggestionService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -23,12 +27,18 @@ import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
 public class FileServiceImpl implements IFileService {
+
+
+    private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
 
     @Autowired
     protected FastFileStorageClient client;
@@ -42,47 +52,56 @@ public class FileServiceImpl implements IFileService {
     @Autowired
     protected FdfsConstant fdfsConstant;
 
+    @Autowired
+    protected ThumbImageConfig thumbImageCfg;
+
     @Value("${des.seed}")
     protected String desSeed;
 
+    private EncryptDes encrypter;
+
     @Override
-    public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength) throws Exception {
-        return uploadFile(file, uploadFileName, fileLength, 0);
+    public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength, boolean genThumbImage) throws Exception {
+        return uploadFile(file, uploadFileName, fileLength, 0, genThumbImage);
     }
 
     @Override
-    public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength, Integer author) throws Exception {
+    public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength, Integer author, boolean genThumbImage) throws Exception {
         Assert.hasText(uploadFileName, "文件名不能为空");
         Assert.notNull(file, "文件不能为空");
-        Set<MetaData> metaData;
-        FileInfoData fileInfoData = new FileInfoData();
-        fileInfoData.setFilename(uploadFileName);//文件名
-        fileInfoData.setSize(fileLength);//文件大小
-        fileInfoData.setAuthor(author);//创建者
-        fileInfoData.setTimestamp(System.currentTimeMillis());//时间戳
 
-        StorePath storePath = client.uploadFile(file, fileLength, uploadFileName, (metaData = genMeta(fileInfoData)));
-        fileInfoData.setDownloadUrl(fdfsConstant.getDownloadServer() + storePath.getFullPath() + "?attname=" + uploadFileName);//下载地址
-        fileInfoData.setPath(storePath.getFullPath());
-        fileInfoData.setDelParam(new EncryptDes(desSeed).Encrypt(String.valueOf(insertRecord(fileInfoData))));//删除链接
+        FileInfo fileInfo = new FileInfo();
+        Set<MetaData> metaData = genMeta(fileInfo);
+
+        StorePath storePath = genThumbImage && isSupportThumbImageType(uploadFileName) ?
+                client.uploadImageAndCrtThumbImage(file, fileLength, FileOperatorUtil.getSuffix(uploadFileName), metaData):
+                client.uploadFile(file,fileLength,genStoreFileName(uploadFileName), metaData);
+
+        fileInfo.setSize(fileLength);//文件大小
+        fileInfo.setPath(storePath.getFullPath());//完整路径
+        fileInfo.setTimestamp(System.currentTimeMillis());//时间戳
+        fileInfo.setAuthor(author);//创建者
+        fileInfo.setFilename(uploadFileName);//文件名
+        fileInfo.setThumbImagePath(genThumbImage ? thumbImageCfg.getThumbImagePath(storePath.getFullPath()) : null);
         sug.addSugKey(metaData, uploadFileName);
 
-        return fileInfoData;
+        fileInfoMapper.insertFileInfo(fileInfo);
+        return solveFileInfoData(fileInfo);
     }
 
     @Override
-    public FileInfoData uploadB64File(String b64, String uploadFileName, Integer author) throws Exception {
+    public FileInfoData uploadB64File(String b64, String uploadFileName, Integer author, boolean genThumbImage) throws Exception {
         Assert.hasText(uploadFileName, "文件名不能为空");
         Assert.hasText(b64, "base64不能为空");
         byte[] b = Base64Utils.decodeFromString(b64);
         try (InputStream ins = new ByteArrayInputStream(b)) {
-            return uploadFile(ins, uploadFileName, b.length,author);
+            return uploadFile(ins, uploadFileName, b.length, author, genThumbImage);
         }
     }
 
     @Override
-    public FileInfoData uploadB64File(String b64, String uploadFileName) throws Exception {
-        return uploadB64File(b64,uploadFileName,0);
+    public FileInfoData uploadB64File(String b64, String uploadFileName, boolean genThumbImage) throws Exception {
+        return uploadB64File(b64, uploadFileName, 0, genThumbImage);
     }
 
     @Override
@@ -98,13 +117,68 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public void deleteFile(String delParam)throws Exception{
-        Integer id = Integer.valueOf(new EncryptDes(desSeed).Decrypt(delParam));
+    public void deleteFile(String delParam) {
+        Assert.notNull(delParam, "删除参数不能为空");
+        Integer id = Integer.valueOf(getEncrypter().Decrypt(delParam));
         FileInfo fileInfo = fileInfoMapper.queryFileInfoLimit1(FileInfo.QueryBuild().id(id));
-        if(fileInfo != null) {
+        if (fileInfo != null) {
             logicalDelete(fileInfo.getId());
             client.deleteFile(fileInfo.getPath());
         }
+    }
+
+    @Override
+    public List<FileInfoData> searchByFileName(String name, Integer author) {
+        Assert.hasText(name, "路径不能为空");
+        List<FileInfo> f = fileInfoMapper.queryFileInfo(FileInfo.QueryBuild().filename(name).author(author).isdel(FileServiceConstant.DelStatus.common).build());
+        if (f.size() == 0) {
+            sug.deleteSugKey(name);
+        }
+        return solveFileInfoData(f);
+    }
+
+    @Override
+    public void initFileNameSearchText(boolean rebuild) {
+        List<String> fileNames = fileInfoMapper.queryFileNameSet();
+        sug.initSugKeys(fileNames, rebuild);
+    }
+
+    /**
+     * 是否支持生成缩略图
+     * @param uploadFileName
+     * @return
+     */
+    protected boolean isSupportThumbImageType(String uploadFileName){
+        final List<String> list = Arrays.asList("jpeg", "jpg", "bmp", "png");
+        return list.indexOf(FileOperatorUtil.getSuffix(uploadFileName)) > -1;
+    }
+
+    /**
+     * 获取加密工具
+     *
+     * @return
+     */
+    protected EncryptDes getEncrypter() {
+        if (encrypter == null) {
+            try {
+                encrypter = new EncryptDes(desSeed);
+            } catch (Exception e) {
+                logger.error("初始化加密工具异常", e);
+                throw new IllegalArgumentException("初始化加密工具异常", e);
+            }
+        }
+        return encrypter;
+    }
+
+    /**
+     * 获取下载地址
+     *
+     * @param uploadFileName
+     * @param fullPath
+     * @return
+     */
+    protected String getDownloadUrl(String uploadFileName, String fullPath) {
+        return fdfsConstant.getDownloadServer() + fullPath + "?attname=" + uploadFileName;
     }
 
     /**
@@ -126,20 +200,28 @@ public class FileServiceImpl implements IFileService {
         return storePath;
     }
 
+    protected String getDelParam(Object param) {
+        Assert.notNull(param, "参数不能为空");
+        if (param instanceof String) {
+            Assert.hasText((String) param, "参数不能为空");
+        }
+        return getEncrypter().Encrypt(String.valueOf(param));
+    }
+
 
     /**
      * 生成元数据
      *
      * @return
      */
-    protected Set<MetaData> genMeta(FileInfoData fileInfoData) {
+    protected Set<MetaData> genMeta(FileInfo fileInfoData) {
         Set<MetaData> metaDataSet = new HashSet<>();
         metaDataSet.add(new MetaData(Meta.FILENAME, fileInfoData.getFilename()));
         return metaDataSet;
     }
 
     /**
-     * 获取文件存储名称
+     * 重新编码文件存储名称,解决上传失败,错误码22问题
      *
      * @param original
      * @return
@@ -154,29 +236,37 @@ public class FileServiceImpl implements IFileService {
         } else return "";
     }
 
-    /**
-     * 添加一条记录,返回自增key值
-     * @param fileInfoData
-     */
-    protected int insertRecord(FileInfoData fileInfoData){
-        FileInfo $fileInfo = new FileInfo();
-        $fileInfo.setAuthor(fileInfoData.getAuthor());
-        $fileInfo.setFilename(fileInfoData.getFilename());
-        $fileInfo.setPath(fileInfoData.getPath());
-        $fileInfo.setSize(fileInfoData.getSize());
-        $fileInfo.setTimestamp(fileInfoData.getTimestamp());
-        fileInfoMapper.insertFileInfo($fileInfo);
-        return $fileInfo.getId();
+
+    protected List<FileInfoData> solveFileInfoData(List<FileInfo> fileInfos) {
+        Assert.notNull(fileInfos, "");
+        return fileInfos.stream().map(f -> solveFileInfoData(f)).collect(Collectors.toList());
     }
+
+
+    protected FileInfoData solveFileInfoData(FileInfo info) {
+            FileInfoData data = new FileInfoData();
+            data.setAuthor(info.getAuthor());
+            data.setSize(info.getSize());
+            data.setTimestamp(info.getTimestamp());
+            data.setDelParam(getDelParam(info.getId()));
+            data.setFilename(info.getFilename());
+            data.setPath(info.getPath());
+            data.setDownloadUrl(getDownloadUrl(info.getFilename(), info.getPath()));
+            data.setThumbImagePath(info.getThumbImagePath() != null ? fdfsConstant.getDownloadServer() + info.getThumbImagePath() : null);
+            return data;
+    }
+
+
 
     /**
      * 逻辑删除
+     *
      * @param id
      */
-    protected void logicalDelete(int id){
+    protected void logicalDelete(int id) {
         FileInfo fileInfo = new FileInfo();
         fileInfo.setIsdel(FileServiceConstant.DelStatus.del);
-        fileInfoMapper.update(new FileInfo.UpdateBuilder().set(fileInfo).where(FileInfo.ConditionBuild().idList(id)).build());
+        fileInfoMapper.update(FileInfo.UpdateBuild().set(fileInfo).where(FileInfo.ConditionBuild().idList(id)).build());
     }
 
 }

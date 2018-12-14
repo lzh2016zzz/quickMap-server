@@ -17,14 +17,14 @@ public class FileController extends BaseController {
     protected IFileService fileService;
 
     @RequestMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile file) throws Exception {
-        return jsonRender(fileService.uploadFile(file.getInputStream(), file.getOriginalFilename(), file.getSize()));
+    public String upload(@RequestParam("file") MultipartFile file,@RequestParam(value = "thumbImage",required = false,defaultValue= "false")boolean thumbImage) throws Exception {
+        return jsonRender(fileService.uploadFile(file.getInputStream(), file.getOriginalFilename(), file.getSize(),thumbImage));
     }
 
 
     @PostMapping("/uploadB64")
-    public String uploadB64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName) throws Exception {
-        return jsonRender(fileService.uploadB64File(b64, fileName));
+    public String uploadB64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName,@RequestParam(required = false,defaultValue= "true")boolean thumbImage) throws Exception {
+        return jsonRender(fileService.uploadB64File(b64, fileName,thumbImage));
     }
 
     @RequestMapping(value = "/del/{delPath}")

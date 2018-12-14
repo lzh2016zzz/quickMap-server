@@ -1,8 +1,8 @@
 package org.quickmap.storageService.dao.base;
 
-import org.quickmap.storageService.dao.model.FileInfo;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.quickmap.storageService.dao.model.FileInfo;
 /**
 *  @author author
 */

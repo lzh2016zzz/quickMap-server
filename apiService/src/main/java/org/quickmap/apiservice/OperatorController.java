@@ -18,7 +18,6 @@ public class OperatorController extends BaseController {
     @Autowired
     FileService fileService;
 
-
     /**
      * 下载
      *
@@ -47,13 +46,13 @@ public class OperatorController extends BaseController {
      * @return
      */
     @PostMapping("/upload")
-    public String upload(@RequestParam("file") MultipartFile[] files) {
+    public String upload(@RequestParam("file") MultipartFile[] files,@RequestParam(required = false)boolean thumbImage) {
         if (files.length == 0) {
             return failedRender();
         }
         JSONArray resp = new JSONArray();
         for (MultipartFile file : files) {
-            String s = fileService.upload(file);
+            String s = fileService.upload(file,thumbImage);
             resp.add(JSONObject.parse(s));
         }
         return successRenderData(resp);
@@ -65,8 +64,8 @@ public class OperatorController extends BaseController {
      * @return
      */
     @PostMapping("/upload64")
-    public String upload64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName) {
-        return successRender(fileService.uploadB64(b64, fileName));
+    public String upload64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName,@RequestParam(required = false)boolean thumbImage) {
+        return successRender(fileService.uploadB64(b64, fileName,thumbImage));
     }
 
     /**
@@ -89,9 +88,19 @@ public class OperatorController extends BaseController {
         return fileService.prefix(prefix);
     }
 
+    /**
+     * 初始化自动补全数据
+     * @param
+     * @return
+     */
+    @RequestMapping("/search/initAuto")
+    public String initAuto(@RequestParam("rebuild") boolean rebuild)throws Exception{
+        fileService.initAuto(rebuild);
+        return successRender();
+    }
 
     /**
-     * 获取过去1小时的上传记录
+     * 获取过去24小时的上传记录
      *
      * @return
      */
