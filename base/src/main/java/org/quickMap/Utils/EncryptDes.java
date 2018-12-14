@@ -41,7 +41,7 @@ public class EncryptDes {
 
     private Cipher cipher;
 
-    public EncryptDes(String key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException, UnsupportedEncodingException {
+    public EncryptDes(String key) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException {
         //KeySpec组成加密密钥的密钥内容的（透明）规范
         keySpec = new DESKeySpec(key.getBytes(StandardCharsets.UTF_8));
         keyFactory = SecretKeyFactory.getInstance("DES");

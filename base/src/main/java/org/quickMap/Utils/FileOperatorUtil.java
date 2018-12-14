@@ -63,7 +63,7 @@ public class FileOperatorUtil {
         String[][] mimeStrTable = FileServiceConstant.MineType.getMineTypes();
         for (int i = 0; i < getMineTypes().length; i++) {
             if (mimeStrTable[i][0].length() > 0 && (!mimeHashMap.containsKey(mimeStrTable[i][0]))) {
-                mimeHashMap.put(mimeStrTable[i][0], mimeStrTable[i][1]);
+                mimeHashMap.putIfAbsent(mimeStrTable[i][0], mimeStrTable[i][1]);
             }
         }
         return mimeHashMap;
