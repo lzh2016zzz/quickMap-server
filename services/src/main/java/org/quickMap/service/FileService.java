@@ -65,8 +65,8 @@ public interface FileService {
      * @param fileName
      * @return
      */
-    @RequestMapping(value = "/search/{fileName}")
-    String search(@PathVariable("fileName") String fileName);
+    @RequestMapping("/search/exec")
+    String search(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam(value = "before",required = false)Long before,@RequestParam(value = "after",required = false)Long after,@RequestParam(value = "suffix",required = false)String suffix);
 
     /**
      * 根据前缀获取完成建议

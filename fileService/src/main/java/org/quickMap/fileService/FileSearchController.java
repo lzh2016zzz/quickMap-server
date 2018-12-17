@@ -20,9 +20,9 @@ public class FileSearchController extends BaseController {
     @Autowired
     protected IFileService fileService;
 
-    @RequestMapping("/{fileName}")
-    public String search(@PathVariable("fileName") String fileName) throws Exception{
-        return jsonRender(fileService.searchByFileName(fileName,null));
+    @RequestMapping("/exec")
+    public String search(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam(value = "before",required = false)Long before,@RequestParam(value = "after",required = false)Long after,@RequestParam(value = "suffix",required = false)String suffix)throws Exception{
+        return jsonRender(fileService.search(fileName,before,after,suffix,null));
     }
 
 

@@ -6,26 +6,22 @@ package org.quickMap.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
 
-/**
- * des加密/解密
+/***
+ * des加密/解密工具
  */
-public class EncryptDes {
+public class EncryptDesUtil {
 
-    private Logger logger = LoggerFactory.getLogger(EncryptDes.class);
+    private Logger logger = LoggerFactory.getLogger(EncryptDesUtil.class);
 
 
     private SecretKeyFactory keyFactory;
@@ -36,7 +32,7 @@ public class EncryptDes {
 
     private Cipher cipher;
 
-    public EncryptDes(String key) {
+    public EncryptDesUtil(String key) {
         try {
             //KeySpec组成加密密钥的密钥内容的（透明）规范
             keySpec = new DESKeySpec(key.getBytes(StandardCharsets.UTF_8));

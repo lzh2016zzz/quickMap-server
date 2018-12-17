@@ -3,7 +3,6 @@ package org.quickmap.storageService.dao.base;
 import org.quickmap.storageService.dao.model.FileInfo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.List;
 @CacheConfig(cacheNames = "fileInfos")
 public interface FileInfoBaseMapper {
 
-    @CachePut()
+    @CacheEvict(allEntries = true)
     int insertFileInfo(FileInfo object);
 
     @CacheEvict(allEntries = true)

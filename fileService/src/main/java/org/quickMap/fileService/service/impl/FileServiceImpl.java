@@ -6,7 +6,7 @@ import com.github.tobato.fastdfs.domain.ThumbImageConfig;
 import com.github.tobato.fastdfs.proto.storage.DownloadByteArray;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.quickMap.Utils.EncryptDes;
+import org.quickMap.Utils.EncryptDesUtil;
 import org.quickMap.Utils.FileOperatorUtil;
 import org.quickMap.constant.FileServiceConstant;
 import org.quickMap.constant.FileServiceConstant.Meta;
@@ -56,9 +56,9 @@ public class FileServiceImpl implements IFileService {
     protected ThumbImageConfig thumbImageCfg;
 
     @Value("${des.seed}")
-    protected String desSeed;
+    private String desSeed;
 
-    private EncryptDes encrypter;
+    private EncryptDesUtil encrypter;
 
     @Override
     public FileInfoData uploadFile(InputStream file, String uploadFileName, long fileLength, boolean genThumbImage) throws Exception {
@@ -83,7 +83,7 @@ public class FileServiceImpl implements IFileService {
         fileInfo.setAuthor(author);//创建者
         fileInfo.setFilename(uploadFileName);//文件名
         fileInfo.setSuffix(FileOperatorUtil.getSuffix(uploadFileName));//后缀
-        fileInfo.setThumbImagePath(genThumbImage ? thumbImageCfg.getThumbImagePath(storePath.getFullPath()) : null);
+        fileInfo.setThumbImagePath(genThumbImage ? thumbImageCfg.getThumbImagePath(storePath.getFullPath()) : null);//缩略图地址
         sug.addSugKey(metaData, uploadFileName);
 
         fileInfoMapper.insertFileInfo(fileInfo);
@@ -130,9 +130,10 @@ public class FileServiceImpl implements IFileService {
     }
 
     @Override
-    public List<FileInfoData> searchByFileName(String name, Integer author) {
+    public List<FileInfoData> search(String name,Long before,Long after,String suffix,Integer author) {
         Assert.hasText(name, "路径不能为空");
-        List<FileInfo> f = fileInfoMapper.queryFileInfo(FileInfo.QueryBuild().filename(name).author(author).isdel(FileServiceConstant.DelStatus.common).build());
+        suffix = suffix != null ? suffix.replace(".","") : null;
+        List<FileInfo> f = fileInfoMapper.queryFileInfo(FileInfo.QueryBuild().timestampBetWeen(after,before).suffix(suffix).filename(name).author(author).isdel(FileServiceConstant.DelStatus.common).build());
         if (f.size() == 0) {
             sug.deleteSugKey(name);
         }
@@ -161,9 +162,9 @@ public class FileServiceImpl implements IFileService {
      *
      * @return
      */
-    protected EncryptDes getEncrypter() {
+    protected EncryptDesUtil getEncrypter() {
         if (encrypter == null) {
-            encrypter = new EncryptDes(desSeed);
+            encrypter = new EncryptDesUtil(desSeed);
         }
         return encrypter;
     }
@@ -198,6 +199,11 @@ public class FileServiceImpl implements IFileService {
         return storePath;
     }
 
+    /**
+     * 获取删除地址
+     * @param param
+     * @return
+     */
     protected String getDelParam(Object param) {
         Assert.notNull(param, "参数不能为空");
         if (param instanceof String) {
@@ -212,9 +218,9 @@ public class FileServiceImpl implements IFileService {
      *
      * @return
      */
-    protected Set<MetaData> genMeta(FileInfo fileInfoData) {
+    protected Set<MetaData> genMeta(FileInfo fileInfo) {
         Set<MetaData> metaDataSet = new HashSet<>();
-        metaDataSet.add(new MetaData(Meta.FILENAME, fileInfoData.getFilename()));
+        metaDataSet.add(new MetaData(Meta.FILENAME, fileInfo.getFilename()));
         return metaDataSet;
     }
 

@@ -88,11 +88,14 @@ public interface IFileService {
     /**
      * 根据名称查找
      * @param name
+     * @param before
+     * @param after
+     * @param suffix
      * @param author
      * @return
      * @throws Exception
      */
-    List<FileInfoData> searchByFileName(String name, Integer author)throws Exception;
+    List<FileInfoData> search(String name,Long before,Long after,String suffix,Integer author)throws Exception;
 
     /**
      * 初始化自动补全文本

@@ -73,9 +73,9 @@ public class OperatorController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/search/{fileName}")
-    public String search(@PathVariable("fileName") String fileName) {
-        return fileService.search(fileName);
+    @RequestMapping("/search/exec")
+    public String search(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam(value = "before",required = false)Long before,@RequestParam(value = "after",required = false)Long after,@RequestParam(value = "suffix",required = false)String suffix){
+        return fileService.search(fileName,before,after,suffix);
     }
 
     /**
