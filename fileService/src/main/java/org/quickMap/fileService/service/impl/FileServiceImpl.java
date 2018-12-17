@@ -27,10 +27,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -131,10 +128,12 @@ public class FileServiceImpl implements IFileService {
 
     @Override
     public List<FileInfoData> search(String name,Long before,Long after,String suffix,Integer author) {
-        Assert.hasText(name, "路径不能为空");
+        if((!StringUtils.hasText(name)) && (!StringUtils.hasText(suffix)) && before == null && after == null && author == null){
+            return Collections.emptyList();
+        }
         suffix = suffix != null ? suffix.replace(".","") : null;
         List<FileInfo> f = fileInfoMapper.queryFileInfo(FileInfo.QueryBuild().timestampBetWeen(after,before).suffix(suffix).filename(name).author(author).isdel(FileServiceConstant.DelStatus.common).build());
-        if (f.size() == 0) {
+        if (f.size() == 0 && StringUtils.hasText(name)) {
             sug.deleteSugKey(name);
         }
         return solveFileInfoData(f);

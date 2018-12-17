@@ -20,10 +20,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisDataException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionService {
@@ -101,7 +98,7 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
     public List<Suggestion> getSuggestions(String prefix) {
         Assert.hasText(prefix, "前缀不能为空");
         if (prefix.length() < 2) {
-            return new ArrayList<>();
+            return Collections.emptyList();
         }
         return getRediSearchClient().getSuggestion(prefix, SuggestionOptions.builder().fuzzy().max(maxSuggestions).build());
     }
