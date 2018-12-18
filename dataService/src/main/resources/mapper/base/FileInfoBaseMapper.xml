@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.quickmap.storageService.dao.base.FileInfoBaseMapper">
+<mapper namespace="org.quickmap.dataService.dao.base.FileInfoBaseMapper">
 
 
     <insert id="insertFileInfo"  useGeneratedKeys="true" keyProperty="id">
@@ -283,7 +283,7 @@
     </update>
 
 
-    <resultMap type="org.quickmap.storageService.dao.model.FileInfo" id="FileInfoMap">
+    <resultMap type="org.quickmap.dataService.dao.model.FileInfo" id="FileInfoMap">
         <result property="id" column="id"/>
         <result property="filename" column="filename"/>
         <result property="size" column="size"/>
@@ -328,7 +328,7 @@
             <if test="suffix != null and suffix!=''">
                 `suffix` = #{suffix} and
             </if>
-            <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
+            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.FileInfo$QueryBuilder) == true">
                 <if test="idList != null">
                     `id` in
                     <foreach collection="idList" close=")" open="(" separator="," item="item">
@@ -505,7 +505,7 @@
             <if test="suffix != null and suffix!=''">
                 `suffix` = #{suffix} and
             </if>
-            <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
+            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.FileInfo$QueryBuilder) == true">
                     <if test="idList != null">
                         `id` in
                         <foreach collection="idList" close=")" open="(" separator="," item="item">
@@ -669,7 +669,7 @@
 
     <sql id="baseResult">
         <trim suffixOverrides=",">
-            <if test = "(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == true">
+            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.FileInfo$QueryBuilder) == true">
 
                 <if test="fetchFields==null">
                     <include refid="allResult"></include>
@@ -746,7 +746,7 @@
                     </if>
                 </if>
             </if>
-            <if test="(_parameter instanceof org.quickmap.storageService.dao.model.FileInfo$QueryBuilder) == false" >
+            <if test="(_parameter instanceof org.quickmap.dataService.dao.model.FileInfo$QueryBuilder) == false" >
                 <include refid="allResult"></include>
             </if>
 

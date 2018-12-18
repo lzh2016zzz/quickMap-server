@@ -1,4 +1,4 @@
-package org.quickmap.storageService.dao.model;
+package org.quickmap.dataService.dao.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

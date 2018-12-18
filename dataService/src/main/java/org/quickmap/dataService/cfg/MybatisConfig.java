@@ -1,4 +1,4 @@
-package org.quickmap.storageService.cfg;
+package org.quickmap.dataService.cfg;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;

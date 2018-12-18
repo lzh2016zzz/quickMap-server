@@ -1,4 +1,4 @@
-package org.quickmap.storageService.cfg;
+package org.quickmap.dataService.cfg;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
@@ -7,12 +7,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @AutoConfigureAfter(MybatisConfig.class)
-@MapperScan("org.quickmap.storageService.dao")
+@MapperScan("org.quickmap.dataService.dao")
 public class MybatisMapperScannerConfig {
     public MapperScannerConfigurer mapperScannerConfigurer(){
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-        mapperScannerConfigurer.setBasePackage("org.quickmap.storageService.dao");
+        mapperScannerConfigurer.setBasePackage("org.quickmap.dataService.dao");
         return mapperScannerConfigurer;
     }
 }

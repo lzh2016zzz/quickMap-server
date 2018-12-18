@@ -1,6 +1,6 @@
-package org.quickmap.storageService.dao.base;
+package org.quickmap.dataService.dao.base;
 
-import org.quickmap.storageService.dao.model.FileInfo;
+import org.quickmap.dataService.dao.model.FileInfo;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;

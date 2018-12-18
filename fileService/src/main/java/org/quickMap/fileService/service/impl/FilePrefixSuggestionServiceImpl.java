@@ -8,7 +8,7 @@ import io.redisearch.client.Client;
 import io.redisearch.client.SuggestionOptions;
 import org.quickMap.constant.FileServiceConstant.Meta;
 import org.quickMap.fileService.service.IFilePrefixSuggestionService;
-import org.quickmap.storageService.cfg.RedisConstant;
+import org.quickmap.dataService.cfg.RedisConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
-package org.quickmap.storageService.dao;
+package org.quickmap.dataService.dao;
 
-import org.quickmap.storageService.dao.base.FileInfoBaseMapper;
+import org.quickmap.dataService.dao.base.FileInfoBaseMapper;
 
 import java.util.List;
 

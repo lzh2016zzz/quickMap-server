@@ -1,4 +1,4 @@
-package org.quickmap.storageService.cfg;
+package org.quickmap.dataService.cfg;
 
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;

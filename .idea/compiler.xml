@@ -8,32 +8,32 @@
         <outputRelativeToContentRoot value="true" />
         <module name="apiService" />
         <module name="base" />
+        <module name="dataService" />
         <module name="fileService" />
         <module name="regService" />
         <module name="services" />
-        <module name="storageService" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="apiService" target="1.8" />
       <module name="base" target="1.8" />
       <module name="cache" target="1.8" />
+      <module name="dataService" target="1.8" />
       <module name="fileService" target="1.8" />
       <module name="quickMap-server" target="1.8" />
       <module name="registrationserver" target="1.5" />
       <module name="regService" target="1.8" />
       <module name="services" target="1.8" />
-      <module name="storageService" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="apiService" options="-parameters" />
       <module name="base" options="-parameters" />
+      <module name="dataService" options="-parameters" />
       <module name="fileService" options="-parameters" />
       <module name="regService" options="-parameters" />
       <module name="services" options="-parameters" />
-      <module name="storageService" options="-parameters" />
     </option>
   </component>
 </project>

@@ -99,14 +99,4 @@ public class OperatorController extends BaseController {
         return successRender();
     }
 
-    /**
-     * 获取过去24小时的上传记录
-     *
-     * @return
-     */
-    @PostMapping("/list")
-    public String list() {
-        return "";
-    }
-
 }

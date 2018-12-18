@@ -4,9 +4,9 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/apiService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/base" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dataService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fileService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/regService" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/services" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/storageService" charset="UTF-8" />
   </component>
 </project>
