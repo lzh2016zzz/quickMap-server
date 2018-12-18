@@ -37,6 +37,11 @@
 
     <dependencies>
         <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt</artifactId>
+        <version>0.9.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.quickMap</groupId>
             <artifactId>service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
@@ -48,7 +53,12 @@
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.quickMap</groupId>
+            <artifactId>dataService</artifactId>
+            <version>1.0.0.RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

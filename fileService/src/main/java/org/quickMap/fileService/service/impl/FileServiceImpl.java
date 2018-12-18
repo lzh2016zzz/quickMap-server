@@ -73,7 +73,7 @@ public class FileServiceImpl implements IFileService {
         StorePath storePath = genThumbImage && isSupportThumbImageType(uploadFileName) ?
                 client.uploadImageAndCrtThumbImage(file, fileLength, FileOperatorUtil.getSuffix(uploadFileName), metaData) :
                 client.uploadFile(file, fileLength, genStoreFileName(uploadFileName), metaData);
-
+        fileInfo.setId(UUID.randomUUID().toString());
         fileInfo.setSize(fileLength);//文件大小
         fileInfo.setPath(storePath.getFullPath());//完整路径
         fileInfo.setTimestamp(System.currentTimeMillis());//时间戳
@@ -81,7 +81,7 @@ public class FileServiceImpl implements IFileService {
         fileInfo.setFilename(uploadFileName);//文件名
         fileInfo.setSuffix(FileOperatorUtil.getSuffix(uploadFileName));//后缀
         fileInfo.setThumbImagePath(genThumbImage ? thumbImageCfg.getThumbImagePath(storePath.getFullPath()) : null);//缩略图地址
-        sug.addSugKey(metaData, uploadFileName);
+            sug.addSugKey(metaData, uploadFileName);
 
         fileInfoMapper.insertFileInfo(fileInfo);
         return solveFileInfoData(fileInfo);
@@ -117,7 +117,7 @@ public class FileServiceImpl implements IFileService {
     @Override
     public void deleteFile(String delParam) {
         Assert.notNull(delParam, "删除参数不能为空");
-        Integer id = Integer.valueOf(getEncrypter().decrypt(delParam));
+        String id = getEncrypter().decrypt(delParam);
         FileInfo fileInfo = fileInfoMapper.queryFileInfoLimit1(FileInfo.QueryBuild().id(id));
         if (fileInfo != null) {
             logicalDelete(fileInfo.getId());
@@ -265,9 +265,8 @@ public class FileServiceImpl implements IFileService {
      *
      * @param id
      */
-    protected void logicalDelete(int id) {
-        FileInfo fileInfo = new FileInfo();
-        fileInfo.setIsdel(FileServiceConstant.DelStatus.del);
+    protected void logicalDelete(String id) {
+        FileInfo fileInfo = FileInfo.Build().isdel(FileServiceConstant.DelStatus.del).build();
         fileInfoMapper.update(FileInfo.UpdateBuild().set(fileInfo).where(FileInfo.ConditionBuild().idList(id)).build());
     }
 

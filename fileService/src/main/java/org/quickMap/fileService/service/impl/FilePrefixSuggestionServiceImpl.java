@@ -28,8 +28,6 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
     private Logger logger = LoggerFactory.getLogger(FilePrefixSuggestionServiceImpl.class);
 
     @Autowired
-
-
     public static final int maxSuggestions = 15;
 
     private RedisConstant config;
@@ -138,7 +136,7 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
 
     /**
      *
-     * Client 对象不是线程安全的.所以每个线程都要new一个Client
+     * 注意 : Client 对象不是线程安全的.
      *
      * @return
      */

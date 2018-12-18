@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class FileInfo implements Serializable {
 
-    private static final long serialVersionUID = 1544787513267L;
+    private static final long serialVersionUID = 1545134203291L;
 
 
     /**
@@ -18,7 +18,7 @@ public class FileInfo implements Serializable {
     * 
     * isNullAble:0
     */
-    private Integer id;
+    private String id;
 
     /**
     * 
@@ -69,9 +69,9 @@ public class FileInfo implements Serializable {
     private String suffix;
 
 
-    public void setId(Integer id){this.id = id;}
+    public void setId(String id){this.id = id;}
 
-    public Integer getId(){return this.id;}
+    public String getId(){return this.id;}
 
     public void setFilename(String filename){this.filename = filename;}
 
@@ -164,18 +164,18 @@ public class FileInfo implements Serializable {
 
         public Map<String,Object> getFetchFields(){return this.fetchFields;}
 
-        private List<Integer> idList;
+        private List<String> idList;
 
-        public List<Integer> getIdList(){return this.idList;}
+        public List<String> getIdList(){return this.idList;}
 
-        private Integer idSt;
 
-        private Integer idEd;
+        private List<String> fuzzyId;
 
-        public Integer getIdSt(){return this.idSt;}
+        public List<String> getFuzzyId(){return this.fuzzyId;}
 
-        public Integer getIdEd(){return this.idEd;}
+        private List<String> rightFuzzyId;
 
+        public List<String> getRightFuzzyId(){return this.rightFuzzyId;}
         private List<String> filenameList;
 
         public List<String> getFilenameList(){return this.filenameList;}
@@ -276,33 +276,37 @@ public class FileInfo implements Serializable {
             this.fetchFields = new HashMap<>();
         }
 
-        public QueryBuilder idBetWeen(Integer idSt,Integer idEd){
-            this.idSt = idSt;
-            this.idEd = idEd;
+        public QueryBuilder fuzzyId (List<String> fuzzyId){
+            this.fuzzyId = fuzzyId;
             return this;
         }
 
-        public QueryBuilder idGreaterEqThan(Integer idSt){
-            this.idSt = idSt;
-            return this;
-        }
-        public QueryBuilder idLessEqThan(Integer idEd){
-            this.idEd = idEd;
+        public QueryBuilder fuzzyId (String ... fuzzyId){
+            this.fuzzyId = solveNullList(fuzzyId);
             return this;
         }
 
+        public QueryBuilder rightFuzzyId (List<String> rightFuzzyId){
+            this.rightFuzzyId = rightFuzzyId;
+            return this;
+        }
 
-        public QueryBuilder id(Integer id){
+        public QueryBuilder rightFuzzyId (String ... rightFuzzyId){
+            this.rightFuzzyId = solveNullList(rightFuzzyId);
+            return this;
+        }
+
+        public QueryBuilder id(String id){
             setId(id);
             return this;
         }
 
-        public QueryBuilder idList(Integer ... id){
+        public QueryBuilder idList(String ... id){
             this.idList = solveNullList(id);
             return this;
         }
 
-        public QueryBuilder idList(List<Integer> id){
+        public QueryBuilder idList(List<String> id){
             this.idList = id;
             return this;
         }
@@ -703,18 +707,18 @@ public class FileInfo implements Serializable {
 
 
     public static class ConditionBuilder{
-        private List<Integer> idList;
+        private List<String> idList;
 
-        public List<Integer> getIdList(){return this.idList;}
+        public List<String> getIdList(){return this.idList;}
 
-        private Integer idSt;
 
-        private Integer idEd;
+        private List<String> fuzzyId;
 
-        public Integer getIdSt(){return this.idSt;}
+        public List<String> getFuzzyId(){return this.fuzzyId;}
 
-        public Integer getIdEd(){return this.idEd;}
+        private List<String> rightFuzzyId;
 
+        public List<String> getRightFuzzyId(){return this.rightFuzzyId;}
         private List<String> filenameList;
 
         public List<String> getFilenameList(){return this.filenameList;}
@@ -812,28 +816,32 @@ public class FileInfo implements Serializable {
 
         public List<String> getRightFuzzySuffix(){return this.rightFuzzySuffix;}
 
-        public ConditionBuilder idBetWeen(Integer idSt,Integer idEd){
-            this.idSt = idSt;
-            this.idEd = idEd;
+        public ConditionBuilder fuzzyId (List<String> fuzzyId){
+            this.fuzzyId = fuzzyId;
             return this;
         }
 
-        public ConditionBuilder idGreaterEqThan(Integer idSt){
-            this.idSt = idSt;
-            return this;
-        }
-        public ConditionBuilder idLessEqThan(Integer idEd){
-            this.idEd = idEd;
+        public ConditionBuilder fuzzyId (String ... fuzzyId){
+            this.fuzzyId = solveNullList(fuzzyId);
             return this;
         }
 
+        public ConditionBuilder rightFuzzyId (List<String> rightFuzzyId){
+            this.rightFuzzyId = rightFuzzyId;
+            return this;
+        }
 
-        public ConditionBuilder idList(Integer ... id){
+        public ConditionBuilder rightFuzzyId (String ... rightFuzzyId){
+            this.rightFuzzyId = solveNullList(rightFuzzyId);
+            return this;
+        }
+
+        public ConditionBuilder idList(String ... id){
             this.idList = solveNullList(id);
             return this;
         }
 
-        public ConditionBuilder idList(List<Integer> id){
+        public ConditionBuilder idList(List<String> id){
             this.idList = id;
             return this;
         }
@@ -1086,7 +1094,7 @@ public class FileInfo implements Serializable {
             this.obj = new FileInfo();
         }
 
-        public Builder id(Integer id){
+        public Builder id(String id){
             this.obj.setId(id);
             return this;
         }

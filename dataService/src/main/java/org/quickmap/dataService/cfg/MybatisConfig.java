@@ -12,9 +12,13 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
+/**
+ * mybatis配置
+ */
 @Configuration
 @PropertySource("classpath:mybatis.properties")
 public class MybatisConfig {
+    public static final String SqlSessionFactoryName = "sqlSessionFactory";
 
     @Value("${mybatis.mapperLocations}")
     private String mapperLocations;
@@ -25,7 +29,7 @@ public class MybatisConfig {
         return new DruidDataSource();
     }
 
-    @Bean(name="sqlSessionFactory")
+    @Bean(name = SqlSessionFactoryName)
     public SqlSessionFactory sqlSessionFactory() throws Exception{
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());

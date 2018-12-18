@@ -4,7 +4,7 @@
 <mapper namespace="org.quickmap.dataService.dao.base.FileInfoBaseMapper">
 
 
-    <insert id="insertFileInfo"  useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertFileInfo" >
         INSERT INTO `file_info`
         (
         <trim suffixOverrides=",">
@@ -145,11 +145,19 @@
                         #{item}
                     </foreach> and
                 </if>
-            <if test="where.idSt !=null">
-                `id` >= #{where.idSt} and
+            <if test ="where.fuzzyId!=null and where.fuzzyId.size()>0">
+                (
+                <foreach collection="where.fuzzyId"  separator="or" item="item">
+                    `Id` like concat('%',#{item},'%')
+                </foreach>
+                ) and
             </if>
-            <if test="where.idEd!=null">
-                `id` &lt;= #{where.idEd} and
+            <if test ="where.rightFuzzyId!=null and where.rightFuzzyId.size()>0">
+                (
+                <foreach collection="where.rightFuzzyId"  separator="or" item="item">
+                    `Id` like concat(#{item},'%')
+                </foreach>
+                ) and
             </if>
                 <if test="where.filenameList != null">
                     `filename` in
@@ -301,7 +309,7 @@
         <include refid="baseResult"></include>
         from  `file_info`
         <trim prefix="where" suffixOverrides="and | or">
-            <if test="id != null">
+            <if test="id != null and id!=''">
                 `id` = #{id} and
             </if>
             <if test="filename != null and filename!=''">
@@ -335,11 +343,19 @@
                         #{item}
                     </foreach> and
                 </if>
-                <if test="idSt !=null">
-                    `id` >= #{idSt} and
+                <if test ="fuzzyId!=null and fuzzyId.size()>0">
+                    (
+                    <foreach collection="fuzzyId"  separator="or" item="item">
+                        `Id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
                 </if>
-                <if test="idEd!=null">
-                    `id` &lt;= #{idEd} and
+                <if test ="rightFuzzyId!=null and rightFuzzyId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyId"  separator="or" item="item">
+                        `Id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
                 </if>
                 <if test="filenameList != null">
                     `filename` in
@@ -478,7 +494,7 @@
         <include refid="baseResult"></include>
         from  `file_info`
         <trim prefix="where" suffixOverrides="and | or">
-            <if test="id != null">
+            <if test="id != null and id!=''">
                 `id` = #{id} and
             </if>
             <if test="filename != null and filename!=''">
@@ -512,11 +528,19 @@
                             #{item}
                         </foreach> and
                     </if>
-                <if test="idSt !=null">
-                    `id` >= #{idSt} and
+                <if test ="fuzzyId!=null and fuzzyId.size()>0">
+                    (
+                    <foreach collection="fuzzyId"  separator="or" item="item">
+                        `Id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
                 </if>
-                <if test="idEd!=null">
-                    `id` &lt;= #{idEd} and
+                <if test ="rightFuzzyId!=null and rightFuzzyId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyId"  separator="or" item="item">
+                        `Id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
                 </if>
                     <if test="filenameList != null">
                         `filename` in

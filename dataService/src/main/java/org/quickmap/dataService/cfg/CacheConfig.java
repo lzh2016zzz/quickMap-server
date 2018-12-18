@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 缓存配置
  */
+
+/**
+ * redis缓存配置
+ */
 @Configuration
 @EnableCaching
 public class CacheConfig {
