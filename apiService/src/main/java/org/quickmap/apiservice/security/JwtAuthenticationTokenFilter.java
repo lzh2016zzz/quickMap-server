@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.quickMap.constant.ApiServiceConstant.ROLE_PREFIX;
-
 /**
  * jwt token身份验证过滤器
  * 从cookie中获取httpOnly的AUTH_TOKEN,
