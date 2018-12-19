@@ -3,9 +3,12 @@ package org.quickmap.apiservice;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.quickMap.base.BaseController;
+import org.quickMap.constant.ApiServiceConstant;
+import org.quickMap.constant.ApiServiceConstant.RoleList;
 import org.quickMap.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,6 +76,7 @@ public class OperatorController extends BaseController {
      *
      * @return
      */
+    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"')")
     @RequestMapping("/search/exec")
     public String search(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam(value = "before",required = false)Long before,@RequestParam(value = "after",required = false)Long after,@RequestParam(value = "suffix",required = false)String suffix){
         return fileService.search(fileName,before,after,suffix);
@@ -83,6 +87,7 @@ public class OperatorController extends BaseController {
      *
      * @return
      */
+    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"')")
     @RequestMapping("/prefix/{prefix}")
     public String prefix(@PathVariable("prefix") String prefix) {
         return fileService.prefix(prefix);
@@ -93,6 +98,7 @@ public class OperatorController extends BaseController {
      * @param
      * @return
      */
+    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"')")
     @RequestMapping("/search/initAuto")
     public String initAuto(@RequestParam("rebuild") boolean rebuild)throws Exception{
         fileService.initAuto(rebuild);

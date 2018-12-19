@@ -7,6 +7,25 @@ public class ApiServiceConstant {
     public static final String USER_INFO = "userInfo";//用户信息
 
 
+    public static class RoleList{
+
+        /**
+         * 管理员
+         */
+        public static final String ADMIN =  "ADMIN";
+
+        /**
+         * 普通用户
+         */
+        public static final String COMMON_USER = "COMMON";
+
+        /**
+         * VIP用户
+         */
+        public static final String VIP_USER = "VIP";
+    }
+
+
     public static class DelStatus{
 
         /**

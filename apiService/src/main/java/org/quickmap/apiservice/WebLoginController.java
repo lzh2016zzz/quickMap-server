@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 @RestController()
 @RequestMapping("/login")
 public class WebLoginController extends BaseController {
@@ -24,7 +27,7 @@ public class WebLoginController extends BaseController {
      * @param userName
      * @param password
      * @return
-     */
+             */
     @RequestMapping(value = "/auth")
     public String auth(@RequestParam("userName") String userName, @RequestParam("password") String password) {
         try {
@@ -34,4 +37,5 @@ public class WebLoginController extends BaseController {
             return failedRender("登录失败");
         }
     }
+
 }
