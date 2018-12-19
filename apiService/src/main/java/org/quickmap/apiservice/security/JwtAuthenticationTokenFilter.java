@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.quickMap.constant.ApiServiceConstant.ROLE_PREFIX;
+
 /**
  * jwt token身份验证过滤器
  * 从cookie中获取httpOnly的AUTH_TOKEN,
@@ -48,7 +50,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 && (userInfo = tokenService.getUserByToken(optional.get().getValue())) != null) {
             //获取权限字符
             List<GrantedAuthority> authorities = StringUtils.hasText(userInfo.getRoles()) ? Arrays.stream(userInfo.getRoles().split(","))
-                    .map(roleName -> new SimpleGrantedAuthority(roleName)).collect(Collectors.toList()) : Collections.emptyList();
+                    .map(roleName -> new SimpleGrantedAuthority(roleName.startsWith(ApiServiceConstant.ROLE_PREFIX) ? roleName :
+                            (ApiServiceConstant.ROLE_PREFIX + roleName))).collect(Collectors.toList()) : Collections.emptyList();
             //添加访问权限
             authentication = new UsernamePasswordAuthenticationToken(
                     new User(userInfo.getLoginName(), "", authorities), null, authorities);

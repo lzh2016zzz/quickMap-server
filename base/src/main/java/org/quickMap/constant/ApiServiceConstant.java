@@ -6,6 +6,7 @@ public class ApiServiceConstant {
 
     public static final String USER_INFO = "userInfo";//用户信息
 
+    public static final String ROLE_PREFIX = "ROLE_";//用户角色前缀
 
     public static class RoleList{
 
