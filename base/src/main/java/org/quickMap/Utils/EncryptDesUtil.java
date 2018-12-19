@@ -21,7 +21,7 @@ import javax.crypto.spec.DESKeySpec;
  */
 public class EncryptDesUtil {
 
-    private Logger logger = LoggerFactory.getLogger(EncryptDesUtil.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
 
     private SecretKeyFactory keyFactory;

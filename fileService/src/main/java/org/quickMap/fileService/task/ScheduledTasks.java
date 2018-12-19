@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ScheduledTasks {
 
-    private Logger logger = LoggerFactory.getLogger(FilePrefixSuggestionServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     IFileService fileService;

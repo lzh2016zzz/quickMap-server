@@ -1,39 +1,46 @@
 package org.quickmap.apiservice.service.impl;
 
-import io.jsonwebtoken.Claims;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.quickMap.exception.AuthenticationException;
 import org.quickmap.apiservice.service.ITokenService;
+import org.quickmap.dataService.dao.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class TokenServiceImpl implements ITokenService {
 
-    private Logger logger = LoggerFactory.getLogger(TokenServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${token.expireSeconds}")
-    Integer expireSeconds;
+    private Integer expireSeconds;
 
     @Value("${token.secret}")
-    String secret;
+    private String secret;
 
-    public String getToken(String subject) throws AuthenticationException {
+    @Override
+    public String generateToken(Map<String,Object>claims) {
+        Assert.notNull(claims, "参数不能为空");
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + expireSeconds * 1000);
-        return Jwts.builder().setHeaderParam("type", "jwt").setSubject(subject).setIssuedAt(nowDate).setExpiration(expireDate).signWith(SignatureAlgorithm.HS256, secret).compact();
+        return Jwts.builder().setClaims(claims).setIssuedAt(nowDate).setExpiration(expireDate).signWith(SignatureAlgorithm.HS256, secret).compact();
     }
 
-    public Claims getClaimByToken(String token) {
+    @Override
+    public UserInfo getUserByToken(String token) {
+        Assert.hasText(token, "参数不能为空");
         try {
-            return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+            return new JSONObject(Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody()).toJavaObject(UserInfo.class);
         } catch (Exception e) {
-            logger.debug("validate is token error ", e);
+            logger.debug("token解密失败", e);
             return null;
         }
     }

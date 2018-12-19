@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.quickmap.dataService.dao.base.UserInfoBaseMapper">
+
+
+    <insert id="insertUserInfo" >
+        INSERT INTO `user_info`
+        (
+        <trim suffixOverrides=",">
+                    <if test="id!=null">
+                        `id`,
+                    </if>
+                    <if test="loginName!=null">
+                        `login_name`,
+                    </if>
+                    <if test="password!=null">
+                        `password`,
+                    </if>
+                    <if test="salt!=null">
+                        `salt`,
+                    </if>
+                    <if test="roles!=null">
+                        `roles`,
+                    </if>
+                    <if test="nickName!=null">
+                        `nick_name`,
+                    </if>
+                    <if test="isDel!=null">
+                        `is_del`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="id!=null">
+                    #{id},
+                </if>
+                <if test="loginName!=null">
+                    #{loginName},
+                </if>
+                <if test="password!=null">
+                    #{password},
+                </if>
+                <if test="salt!=null">
+                    #{salt},
+                </if>
+                <if test="roles!=null">
+                    #{roles},
+                </if>
+                <if test="nickName!=null">
+                    #{nickName},
+                </if>
+                <if test="isDel!=null">
+                    #{isDel},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateUserInfo">
+        UPDATE `user_info`
+        SET
+        <trim suffixOverrides=",">
+            <if test="loginName != null and loginName!=''">
+                `login_name` = #{loginName},
+            </if>
+            <if test="password != null and password!=''">
+                `password` = #{password},
+            </if>
+            <if test="salt != null and salt!=''">
+                `salt` = #{salt},
+            </if>
+            <if test="roles != null and roles!=''">
+                `roles` = #{roles},
+            </if>
+            <if test="nickName != null and nickName!=''">
+                `nick_name` = #{nickName},
+            </if>
+            <if test="isDel != null">
+                `is_del` = #{isDel},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+    <update id="update">
+        UPDATE `user_info`
+        SET
+        <trim suffixOverrides=",">
+        <if test="set.loginName != null and set.loginName!=''">
+            `login_name` = #{set.loginName},
+        </if>
+        <if test="set.password != null and set.password!=''">
+            `password` = #{set.password},
+        </if>
+        <if test="set.salt != null and set.salt!=''">
+            `salt` = #{set.salt},
+        </if>
+        <if test="set.roles != null and set.roles!=''">
+            `roles` = #{set.roles},
+        </if>
+        <if test="set.nickName != null and set.nickName!=''">
+            `nick_name` = #{set.nickName},
+        </if>
+        <if test="set.isDel != null">
+            `is_del` = #{set.isDel},
+        </if>
+        </trim>
+        <trim prefix="where" suffixOverrides="and | or">
+                <if test="where.idList != null">
+                    `id` in
+                    <foreach collection="where.idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyId!=null and where.fuzzyId.size()>0">
+                (
+                <foreach collection="where.fuzzyId"  separator="or" item="item">
+                    `Id` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyId!=null and where.rightFuzzyId.size()>0">
+                (
+                <foreach collection="where.rightFuzzyId"  separator="or" item="item">
+                    `Id` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.loginNameList != null">
+                    `login_name` in
+                    <foreach collection="where.loginNameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyLoginName!=null and where.fuzzyLoginName.size()>0">
+                (
+                <foreach collection="where.fuzzyLoginName"  separator="or" item="item">
+                    `Login_name` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyLoginName!=null and where.rightFuzzyLoginName.size()>0">
+                (
+                <foreach collection="where.rightFuzzyLoginName"  separator="or" item="item">
+                    `Login_name` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.passwordList != null">
+                    `password` in
+                    <foreach collection="where.passwordList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyPassword!=null and where.fuzzyPassword.size()>0">
+                (
+                <foreach collection="where.fuzzyPassword"  separator="or" item="item">
+                    `Password` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyPassword!=null and where.rightFuzzyPassword.size()>0">
+                (
+                <foreach collection="where.rightFuzzyPassword"  separator="or" item="item">
+                    `Password` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.saltList != null">
+                    `salt` in
+                    <foreach collection="where.saltList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzySalt!=null and where.fuzzySalt.size()>0">
+                (
+                <foreach collection="where.fuzzySalt"  separator="or" item="item">
+                    `Salt` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzySalt!=null and where.rightFuzzySalt.size()>0">
+                (
+                <foreach collection="where.rightFuzzySalt"  separator="or" item="item">
+                    `Salt` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.rolesList != null">
+                    `roles` in
+                    <foreach collection="where.rolesList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyRoles!=null and where.fuzzyRoles.size()>0">
+                (
+                <foreach collection="where.fuzzyRoles"  separator="or" item="item">
+                    `Roles` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyRoles!=null and where.rightFuzzyRoles.size()>0">
+                (
+                <foreach collection="where.rightFuzzyRoles"  separator="or" item="item">
+                    `Roles` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.nickNameList != null">
+                    `nick_name` in
+                    <foreach collection="where.nickNameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyNickName!=null and where.fuzzyNickName.size()>0">
+                (
+                <foreach collection="where.fuzzyNickName"  separator="or" item="item">
+                    `Nick_name` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyNickName!=null and where.rightFuzzyNickName.size()>0">
+                (
+                <foreach collection="where.rightFuzzyNickName"  separator="or" item="item">
+                    `Nick_name` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
+                <if test="where.isDelList != null">
+                    `is_del` in
+                    <foreach collection="where.isDelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test="where.isDelSt !=null">
+                `is_del` >= #{where.isDelSt} and
+            </if>
+            <if test="where.isDelEd!=null">
+                `is_del` &lt;= #{where.isDelEd} and
+            </if>
+        </trim>
+    </update>
+
+
+    <resultMap type="org.quickmap.dataService.dao.model.UserInfo" id="UserInfoMap">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="roles" column="roles"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="isDel" column="is_del"/>
+    </resultMap>
+
+
+    <select id="queryUserInfo" resultMap="UserInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null and id!=''">
+                `id` = #{id} and
+            </if>
+            <if test="loginName != null and loginName!=''">
+                `login_name` = #{loginName} and
+            </if>
+            <if test="password != null and password!=''">
+                `password` = #{password} and
+            </if>
+            <if test="salt != null and salt!=''">
+                `salt` = #{salt} and
+            </if>
+            <if test="roles != null and roles!=''">
+                `roles` = #{roles} and
+            </if>
+            <if test="nickName != null and nickName!=''">
+                `nick_name` = #{nickName} and
+            </if>
+            <if test="isDel != null">
+                `is_del` = #{isDel} and
+            </if>
+            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyId!=null and fuzzyId.size()>0">
+                    (
+                    <foreach collection="fuzzyId"  separator="or" item="item">
+                        `Id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyId!=null and rightFuzzyId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyId"  separator="or" item="item">
+                        `Id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="loginNameList != null">
+                    `login_name` in
+                    <foreach collection="loginNameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyLoginName!=null and fuzzyLoginName.size()>0">
+                    (
+                    <foreach collection="fuzzyLoginName"  separator="or" item="item">
+                        `Login_name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyLoginName!=null and rightFuzzyLoginName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyLoginName"  separator="or" item="item">
+                        `Login_name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="passwordList != null">
+                    `password` in
+                    <foreach collection="passwordList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyPassword!=null and fuzzyPassword.size()>0">
+                    (
+                    <foreach collection="fuzzyPassword"  separator="or" item="item">
+                        `Password` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPassword!=null and rightFuzzyPassword.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPassword"  separator="or" item="item">
+                        `Password` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="saltList != null">
+                    `salt` in
+                    <foreach collection="saltList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzySalt!=null and fuzzySalt.size()>0">
+                    (
+                    <foreach collection="fuzzySalt"  separator="or" item="item">
+                        `Salt` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySalt!=null and rightFuzzySalt.size()>0">
+                    (
+                    <foreach collection="rightFuzzySalt"  separator="or" item="item">
+                        `Salt` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="rolesList != null">
+                    `roles` in
+                    <foreach collection="rolesList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyRoles!=null and fuzzyRoles.size()>0">
+                    (
+                    <foreach collection="fuzzyRoles"  separator="or" item="item">
+                        `Roles` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyRoles!=null and rightFuzzyRoles.size()>0">
+                    (
+                    <foreach collection="rightFuzzyRoles"  separator="or" item="item">
+                        `Roles` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="nickNameList != null">
+                    `nick_name` in
+                    <foreach collection="nickNameList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyNickName!=null and fuzzyNickName.size()>0">
+                    (
+                    <foreach collection="fuzzyNickName"  separator="or" item="item">
+                        `Nick_name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyNickName!=null and rightFuzzyNickName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyNickName"  separator="or" item="item">
+                        `Nick_name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="isDelList != null">
+                    `is_del` in
+                    <foreach collection="isDelList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="isDelSt !=null">
+                    `is_del` >= #{isDelSt} and
+                </if>
+                <if test="isDelEd!=null">
+                    `is_del` &lt;= #{isDelEd} and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryUserInfoLimit1" resultMap="UserInfoMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user_info`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null and id!=''">
+                `id` = #{id} and
+            </if>
+            <if test="loginName != null and loginName!=''">
+                `login_name` = #{loginName} and
+            </if>
+            <if test="password != null and password!=''">
+                `password` = #{password} and
+            </if>
+            <if test="salt != null and salt!=''">
+                `salt` = #{salt} and
+            </if>
+            <if test="roles != null and roles!=''">
+                `roles` = #{roles} and
+            </if>
+            <if test="nickName != null and nickName!=''">
+                `nick_name` = #{nickName} and
+            </if>
+            <if test="isDel != null">
+                `is_del` = #{isDel} and
+            </if>
+            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyId!=null and fuzzyId.size()>0">
+                    (
+                    <foreach collection="fuzzyId"  separator="or" item="item">
+                        `Id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyId!=null and rightFuzzyId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyId"  separator="or" item="item">
+                        `Id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="loginNameList != null">
+                        `login_name` in
+                        <foreach collection="loginNameList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyLoginName!=null and fuzzyLoginName.size()>0">
+                    (
+                    <foreach collection="fuzzyLoginName"  separator="or" item="item">
+                        `Login_name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyLoginName!=null and rightFuzzyLoginName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyLoginName"  separator="or" item="item">
+                        `Login_name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="passwordList != null">
+                        `password` in
+                        <foreach collection="passwordList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyPassword!=null and fuzzyPassword.size()>0">
+                    (
+                    <foreach collection="fuzzyPassword"  separator="or" item="item">
+                        `Password` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyPassword!=null and rightFuzzyPassword.size()>0">
+                    (
+                    <foreach collection="rightFuzzyPassword"  separator="or" item="item">
+                        `Password` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="saltList != null">
+                        `salt` in
+                        <foreach collection="saltList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzySalt!=null and fuzzySalt.size()>0">
+                    (
+                    <foreach collection="fuzzySalt"  separator="or" item="item">
+                        `Salt` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzySalt!=null and rightFuzzySalt.size()>0">
+                    (
+                    <foreach collection="rightFuzzySalt"  separator="or" item="item">
+                        `Salt` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="rolesList != null">
+                        `roles` in
+                        <foreach collection="rolesList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyRoles!=null and fuzzyRoles.size()>0">
+                    (
+                    <foreach collection="fuzzyRoles"  separator="or" item="item">
+                        `Roles` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyRoles!=null and rightFuzzyRoles.size()>0">
+                    (
+                    <foreach collection="rightFuzzyRoles"  separator="or" item="item">
+                        `Roles` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="nickNameList != null">
+                        `nick_name` in
+                        <foreach collection="nickNameList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyNickName!=null and fuzzyNickName.size()>0">
+                    (
+                    <foreach collection="fuzzyNickName"  separator="or" item="item">
+                        `Nick_name` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyNickName!=null and rightFuzzyNickName.size()>0">
+                    (
+                    <foreach collection="rightFuzzyNickName"  separator="or" item="item">
+                        `Nick_name` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="isDelList != null">
+                        `is_del` in
+                        <foreach collection="isDelList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="isDelSt !=null">
+                    `is_del` >= #{isDelSt} and
+                </if>
+                <if test="isDelEd!=null">
+                    `is_del` &lt;= #{isDelEd} and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `login_name`,
+        `password`,
+        `salt`,
+        `roles`,
+        `nick_name`,
+        `is_del`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.loginName==true">
+                        `login_name`,
+                    </if>
+                    <if test="fetchFields.fetchFields.password==true">
+                        `password`,
+                    </if>
+                    <if test="fetchFields.fetchFields.salt==true">
+                        `salt`,
+                    </if>
+                    <if test="fetchFields.fetchFields.roles==true">
+                        `roles`,
+                    </if>
+                    <if test="fetchFields.fetchFields.nickName==true">
+                        `nick_name`,
+                    </if>
+                    <if test="fetchFields.fetchFields.isDel==true">
+                        `is_del`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.loginName==null">
+                        `login_name`,
+                    </if>
+                    <if test="fetchFields.excludeFields.password==null">
+                        `password`,
+                    </if>
+                    <if test="fetchFields.excludeFields.salt==null">
+                        `salt`,
+                    </if>
+                    <if test="fetchFields.excludeFields.roles==null">
+                        `roles`,
+                    </if>
+                    <if test="fetchFields.excludeFields.nickName==null">
+                        `nick_name`,
+                    </if>
+                    <if test="fetchFields.excludeFields.isDel==null">
+                        `is_del`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>

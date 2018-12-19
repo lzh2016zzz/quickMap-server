@@ -25,7 +25,7 @@ import java.util.*;
 @Service
 public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionService {
 
-    private Logger logger = LoggerFactory.getLogger(FilePrefixSuggestionServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     public static final int maxSuggestions = 15;

@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 public class FileServiceImpl implements IFileService {
 
 
-    private Logger logger = LoggerFactory.getLogger(FileServiceImpl.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     protected FastFileStorageClient client;

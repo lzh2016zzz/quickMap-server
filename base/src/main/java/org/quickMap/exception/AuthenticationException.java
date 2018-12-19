@@ -1,9 +1,11 @@
 package org.quickMap.exception;
 
+import org.quickMap.exception.base.BaseBisLogicException;
+
 /**
  * 权限校验异常
  */
-public class AuthenticationException extends RuntimeException{
+public class AuthenticationException extends BaseBisLogicException {
 
 
     public AuthenticationException(String msg) {
@@ -11,6 +13,6 @@ public class AuthenticationException extends RuntimeException{
     }
 
     public AuthenticationException() {
-
+        super();
     }
 }

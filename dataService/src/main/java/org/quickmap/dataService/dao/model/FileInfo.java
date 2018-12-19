@@ -10,13 +10,13 @@ import java.util.List;
 */
 public class FileInfo implements Serializable {
 
-    private static final long serialVersionUID = 1545134203291L;
+    private static final long serialVersionUID = 1545181772751L;
 
 
     /**
     * 主键
     * 
-    * isNullAble:0
+    * isNullAble:0,defaultVal:
     */
     private String id;
 
