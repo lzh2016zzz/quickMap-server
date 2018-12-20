@@ -10,7 +10,7 @@ import java.util.List;
 */
 public class FileInfo implements Serializable {
 
-    private static final long serialVersionUID = 1545181772751L;
+    private static final long serialVersionUID = 1545294938995L;
 
 
     /**

@@ -21,15 +21,15 @@
     </parent>
 
     <modules>
-        <!--服务注册模块 用于开启服务注册中心-->
+        <!--服务注册模块 所有服务都需要向它注册-->
         <module>regService</module>
         <!-- 文件存储/搜索服务  -->
         <module>fileService</module>
-        <!-- 向前端提供api / 主要消费者 -->
+        <!-- 提供api/权限控制 -->
         <module>apiService</module>
-        <!-- 将服务提供者在此处注册,实现RPC远程调用 -->
+        <!-- 将服务提供者在此处注册,实现RPC调用/负载均衡 -->
         <module>services</module>
-        <!-- redis缓存/数据库存储 -->
+        <!-- 数据库/缓存 -->
         <module>dataService</module>
         <!--基础类-->
         <module>base</module>

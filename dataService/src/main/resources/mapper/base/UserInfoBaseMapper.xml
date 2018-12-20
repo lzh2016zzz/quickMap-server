@@ -29,6 +29,9 @@
                     <if test="isDel!=null">
                         `is_del`,
                     </if>
+                    <if test="resetPasswordAnswer!=null">
+                        `reset_password_answer`,
+                    </if>
         </trim>
         )
         VALUES
@@ -54,6 +57,9 @@
                 </if>
                 <if test="isDel!=null">
                     #{isDel},
+                </if>
+                <if test="resetPasswordAnswer!=null">
+                    #{resetPasswordAnswer},
                 </if>
         </trim>
         )
@@ -84,6 +90,9 @@
             <if test="isDel != null">
                 `is_del` = #{isDel},
             </if>
+            <if test="resetPasswordAnswer != null and resetPasswordAnswer!=''">
+                `reset_password_answer` = #{resetPasswordAnswer},
+            </if>
         </trim>
         WHERE
         <trim suffixOverrides="and">
@@ -112,6 +121,9 @@
         </if>
         <if test="set.isDel != null">
             `is_del` = #{set.isDel},
+        </if>
+        <if test="set.resetPasswordAnswer != null and set.resetPasswordAnswer!=''">
+            `reset_password_answer` = #{set.resetPasswordAnswer},
         </if>
         </trim>
         <trim prefix="where" suffixOverrides="and | or">
@@ -247,6 +259,26 @@
             <if test="where.isDelEd!=null">
                 `is_del` &lt;= #{where.isDelEd} and
             </if>
+                <if test="where.resetPasswordAnswerList != null">
+                    `reset_password_answer` in
+                    <foreach collection="where.resetPasswordAnswerList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+            <if test ="where.fuzzyResetPasswordAnswer!=null and where.fuzzyResetPasswordAnswer.size()>0">
+                (
+                <foreach collection="where.fuzzyResetPasswordAnswer"  separator="or" item="item">
+                    `Reset_password_answer` like concat('%',#{item},'%')
+                </foreach>
+                ) and
+            </if>
+            <if test ="where.rightFuzzyResetPasswordAnswer!=null and where.rightFuzzyResetPasswordAnswer.size()>0">
+                (
+                <foreach collection="where.rightFuzzyResetPasswordAnswer"  separator="or" item="item">
+                    `Reset_password_answer` like concat(#{item},'%')
+                </foreach>
+                ) and
+            </if>
         </trim>
     </update>
 
@@ -259,6 +291,7 @@
         <result property="roles" column="roles"/>
         <result property="nickName" column="nick_name"/>
         <result property="isDel" column="is_del"/>
+        <result property="resetPasswordAnswer" column="reset_password_answer"/>
     </resultMap>
 
 
@@ -287,6 +320,9 @@
             </if>
             <if test="isDel != null">
                 `is_del` = #{isDel} and
+            </if>
+            <if test="resetPasswordAnswer != null and resetPasswordAnswer!=''">
+                `reset_password_answer` = #{resetPasswordAnswer} and
             </if>
             <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
                 <if test="idList != null">
@@ -421,6 +457,26 @@
                 <if test="isDelEd!=null">
                     `is_del` &lt;= #{isDelEd} and
                 </if>
+                <if test="resetPasswordAnswerList != null">
+                    `reset_password_answer` in
+                    <foreach collection="resetPasswordAnswerList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyResetPasswordAnswer!=null and fuzzyResetPasswordAnswer.size()>0">
+                    (
+                    <foreach collection="fuzzyResetPasswordAnswer"  separator="or" item="item">
+                        `Reset_password_answer` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyResetPasswordAnswer!=null and rightFuzzyResetPasswordAnswer.size()>0">
+                    (
+                    <foreach collection="rightFuzzyResetPasswordAnswer"  separator="or" item="item">
+                        `Reset_password_answer` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
             </if>
         </trim>
     </select>
@@ -450,6 +506,9 @@
             </if>
             <if test="isDel != null">
                 `is_del` = #{isDel} and
+            </if>
+            <if test="resetPasswordAnswer != null and resetPasswordAnswer!=''">
+                `reset_password_answer` = #{resetPasswordAnswer} and
             </if>
             <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
                     <if test="idList != null">
@@ -584,6 +643,26 @@
                 <if test="isDelEd!=null">
                     `is_del` &lt;= #{isDelEd} and
                 </if>
+                    <if test="resetPasswordAnswerList != null">
+                        `reset_password_answer` in
+                        <foreach collection="resetPasswordAnswerList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyResetPasswordAnswer!=null and fuzzyResetPasswordAnswer.size()>0">
+                    (
+                    <foreach collection="fuzzyResetPasswordAnswer"  separator="or" item="item">
+                        `Reset_password_answer` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyResetPasswordAnswer!=null and rightFuzzyResetPasswordAnswer.size()>0">
+                    (
+                    <foreach collection="rightFuzzyResetPasswordAnswer"  separator="or" item="item">
+                        `Reset_password_answer` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
             </if>
         </trim>
         limit 1
@@ -598,6 +677,7 @@
         `roles`,
         `nick_name`,
         `is_del`,
+        `reset_password_answer`,
         </trim>
     </sql>
 
@@ -639,6 +719,9 @@
                     <if test="fetchFields.fetchFields.isDel==true">
                         `is_del`,
                     </if>
+                    <if test="fetchFields.fetchFields.resetPasswordAnswer==true">
+                        `reset_password_answer`,
+                    </if>
                     </if>
                     <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
                     <if test="fetchFields.excludeFields.id==null">
@@ -661,6 +744,9 @@
                     </if>
                     <if test="fetchFields.excludeFields.isDel==null">
                         `is_del`,
+                    </if>
+                    <if test="fetchFields.excludeFields.resetPasswordAnswer==null">
+                        `reset_password_answer`,
                     </if>
                     </if>
                     <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">

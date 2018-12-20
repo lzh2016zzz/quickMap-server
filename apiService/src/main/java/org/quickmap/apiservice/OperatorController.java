@@ -12,8 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-//跨域支持
-@CrossOrigin(allowCredentials = "true", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.PUT, RequestMethod.PATCH}, origins = "*")
+
 @RestController()
 @RequestMapping("/file")
 public class OperatorController extends BaseController {
@@ -27,6 +26,7 @@ public class OperatorController extends BaseController {
      * @param
      * @return
      */
+    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"','"+RoleList.COMMON_USER+"')")
     @RequestMapping(value = "/{group}/{path}")
     public ResponseEntity<byte[]> download(@PathVariable("group") String group, @PathVariable("path") String path) {
         return fileService.download(group, path);
@@ -48,6 +48,7 @@ public class OperatorController extends BaseController {
      *
      * @return
      */
+    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"','"+RoleList.COMMON_USER+"')")
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile[] files,@RequestParam(required = false)boolean thumbImage) {
         if (files.length == 0) {
@@ -66,6 +67,7 @@ public class OperatorController extends BaseController {
      *
      * @return
      */
+    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"','"+RoleList.COMMON_USER+"')")
     @PostMapping("/upload64")
     public String upload64(@RequestParam("b64") String b64, @RequestParam("fileName") String fileName,@RequestParam(required = false)boolean thumbImage) {
         return successRender(fileService.uploadB64(b64, fileName,thumbImage));

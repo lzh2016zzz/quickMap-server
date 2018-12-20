@@ -1,6 +1,4 @@
 package org.quickmap.dataService.dao.model;
-import com.alibaba.fastjson.annotation.JSONField;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +10,7 @@ import java.util.List;
 */
 public class UserInfo implements Serializable {
 
-    private static final long serialVersionUID = 1545204246477L;
+    private static final long serialVersionUID = 1545294972786L;
 
 
     /**
@@ -32,14 +30,12 @@ public class UserInfo implements Serializable {
     * 
     * isNullAble:0
     */
-    @JSONField(serialize = false)
     private String password;
 
     /**
     * 
     * isNullAble:0
     */
-    @JSONField(serialize = false)
     private String salt;
 
     /**
@@ -59,6 +55,12 @@ public class UserInfo implements Serializable {
     * isNullAble:1,defaultVal:1
     */
     private Integer isDel;
+
+    /**
+    * 
+    * isNullAble:1
+    */
+    private String resetPasswordAnswer;
 
 
     public void setId(String id){this.id = id;}
@@ -88,6 +90,10 @@ public class UserInfo implements Serializable {
     public void setIsDel(Integer isDel){this.isDel = isDel;}
 
     public Integer getIsDel(){return this.isDel;}
+
+    public void setResetPasswordAnswer(String resetPasswordAnswer){this.resetPasswordAnswer = resetPasswordAnswer;}
+
+    public String getResetPasswordAnswer(){return this.resetPasswordAnswer;}
     @Override
     public String toString() {
         return "UserInfo{" +
@@ -98,6 +104,7 @@ public class UserInfo implements Serializable {
                 "roles='" + roles + '\'' +
                 "nickName='" + nickName + '\'' +
                 "isDel='" + isDel + '\'' +
+                "resetPasswordAnswer='" + resetPasswordAnswer + '\'' +
             '}';
     }
 
@@ -230,6 +237,18 @@ public class UserInfo implements Serializable {
 
         public Integer getIsDelEd(){return this.isDelEd;}
 
+        private List<String> resetPasswordAnswerList;
+
+        public List<String> getResetPasswordAnswerList(){return this.resetPasswordAnswerList;}
+
+
+        private List<String> fuzzyResetPasswordAnswer;
+
+        public List<String> getFuzzyResetPasswordAnswer(){return this.fuzzyResetPasswordAnswer;}
+
+        private List<String> rightFuzzyResetPasswordAnswer;
+
+        public List<String> getRightFuzzyResetPasswordAnswer(){return this.rightFuzzyResetPasswordAnswer;}
         private QueryBuilder (){
             this.fetchFields = new HashMap<>();
         }
@@ -544,6 +563,51 @@ public class UserInfo implements Serializable {
             setFetchFields("excludeFields","isDel");
             return this;
         }
+
+        public QueryBuilder fuzzyResetPasswordAnswer (List<String> fuzzyResetPasswordAnswer){
+            this.fuzzyResetPasswordAnswer = fuzzyResetPasswordAnswer;
+            return this;
+        }
+
+        public QueryBuilder fuzzyResetPasswordAnswer (String ... fuzzyResetPasswordAnswer){
+            this.fuzzyResetPasswordAnswer = solveNullList(fuzzyResetPasswordAnswer);
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyResetPasswordAnswer (List<String> rightFuzzyResetPasswordAnswer){
+            this.rightFuzzyResetPasswordAnswer = rightFuzzyResetPasswordAnswer;
+            return this;
+        }
+
+        public QueryBuilder rightFuzzyResetPasswordAnswer (String ... rightFuzzyResetPasswordAnswer){
+            this.rightFuzzyResetPasswordAnswer = solveNullList(rightFuzzyResetPasswordAnswer);
+            return this;
+        }
+
+        public QueryBuilder resetPasswordAnswer(String resetPasswordAnswer){
+            setResetPasswordAnswer(resetPasswordAnswer);
+            return this;
+        }
+
+        public QueryBuilder resetPasswordAnswerList(String ... resetPasswordAnswer){
+            this.resetPasswordAnswerList = solveNullList(resetPasswordAnswer);
+            return this;
+        }
+
+        public QueryBuilder resetPasswordAnswerList(List<String> resetPasswordAnswer){
+            this.resetPasswordAnswerList = resetPasswordAnswer;
+            return this;
+        }
+
+        public QueryBuilder fetchResetPasswordAnswer(){
+            setFetchFields("fetchFields","resetPasswordAnswer");
+            return this;
+        }
+
+        public QueryBuilder excludeResetPasswordAnswer(){
+            setFetchFields("excludeFields","resetPasswordAnswer");
+            return this;
+        }
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -671,6 +735,18 @@ public class UserInfo implements Serializable {
 
         public Integer getIsDelEd(){return this.isDelEd;}
 
+        private List<String> resetPasswordAnswerList;
+
+        public List<String> getResetPasswordAnswerList(){return this.resetPasswordAnswerList;}
+
+
+        private List<String> fuzzyResetPasswordAnswer;
+
+        public List<String> getFuzzyResetPasswordAnswer(){return this.fuzzyResetPasswordAnswer;}
+
+        private List<String> rightFuzzyResetPasswordAnswer;
+
+        public List<String> getRightFuzzyResetPasswordAnswer(){return this.rightFuzzyResetPasswordAnswer;}
 
         public ConditionBuilder fuzzyId (List<String> fuzzyId){
             this.fuzzyId = fuzzyId;
@@ -878,6 +954,36 @@ public class UserInfo implements Serializable {
             return this;
         }
 
+        public ConditionBuilder fuzzyResetPasswordAnswer (List<String> fuzzyResetPasswordAnswer){
+            this.fuzzyResetPasswordAnswer = fuzzyResetPasswordAnswer;
+            return this;
+        }
+
+        public ConditionBuilder fuzzyResetPasswordAnswer (String ... fuzzyResetPasswordAnswer){
+            this.fuzzyResetPasswordAnswer = solveNullList(fuzzyResetPasswordAnswer);
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyResetPasswordAnswer (List<String> rightFuzzyResetPasswordAnswer){
+            this.rightFuzzyResetPasswordAnswer = rightFuzzyResetPasswordAnswer;
+            return this;
+        }
+
+        public ConditionBuilder rightFuzzyResetPasswordAnswer (String ... rightFuzzyResetPasswordAnswer){
+            this.rightFuzzyResetPasswordAnswer = solveNullList(rightFuzzyResetPasswordAnswer);
+            return this;
+        }
+
+        public ConditionBuilder resetPasswordAnswerList(String ... resetPasswordAnswer){
+            this.resetPasswordAnswerList = solveNullList(resetPasswordAnswer);
+            return this;
+        }
+
+        public ConditionBuilder resetPasswordAnswerList(List<String> resetPasswordAnswer){
+            this.resetPasswordAnswerList = resetPasswordAnswer;
+            return this;
+        }
+
         private <T>List<T> solveNullList(T ... objs){
             if (objs != null){
             List<T> list = new ArrayList<>();
@@ -928,6 +1034,10 @@ public class UserInfo implements Serializable {
         }
         public Builder isDel(Integer isDel){
             this.obj.setIsDel(isDel);
+            return this;
+        }
+        public Builder resetPasswordAnswer(String resetPasswordAnswer){
+            this.obj.setResetPasswordAnswer(resetPasswordAnswer);
             return this;
         }
         public UserInfo build(){return obj;}

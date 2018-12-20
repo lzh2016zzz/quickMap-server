@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 /**
  * jwt token身份验证过滤器
  * 从cookie中获取httpOnly的AUTH_TOKEN,
- * 解析 AUTH_TOKEN 获取权限字符
+ * 解析 AUTH_TOKEN 获取身份验证信息
  */
 @Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
@@ -40,29 +40,28 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         Cookie[] cookies = request.getCookies();
-        Optional<Cookie> optional;
         Authentication authentication;
+        String token;
         UserInfo userInfo;
-        if (cookies != null
-                && (optional = Arrays.stream(cookies).filter(cookie -> ApiServiceConstant.AUTH_TOKEN.equals(cookie.getName())).findFirst()).isPresent()
-                && (userInfo = tokenService.getUserByToken(optional.get().getValue())) != null) {
-            //获取权限字符
+        if ((token = SecurityHelper.getTokenFrom(cookies)) != null
+                && ((userInfo = tokenService.getUserByToken(token)) != null)) {
+            //获取&设置权限字符
             List<GrantedAuthority> authorities = StringUtils.hasText(userInfo.getRoles()) ? Arrays.stream(userInfo.getRoles().split(","))
                     .map(roleName -> new SimpleGrantedAuthority(roleName.startsWith(ApiServiceConstant.ROLE_PREFIX) ? roleName :
                             (ApiServiceConstant.ROLE_PREFIX + roleName))).collect(Collectors.toList()) : Collections.emptyList();
-            //添加访问权限
             authentication = new UsernamePasswordAuthenticationToken(
                     new User(userInfo.getLoginName(), "", authorities), null, authorities);
 
         } else {
             authentication = getGuestAuthentication();
         }
+        //向Security上下文添加身份验证信息
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
 
     /**
-     * 获取游客角色
+     * 获取游客角色验证信息
      *
      * @return
      */

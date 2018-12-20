@@ -1,21 +1,21 @@
 package org.quickmap.apiservice.model;
 
 /**
- * 校验参数
+ * 登录校验参数
  */
 public class AuthParam {
 
-    private String userName;
+    private String loginName;
 
     private String password;
 
 
-    public String getUserName() {
-        return userName;
+    public String getLoginName() {
+        return loginName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
     public String getPassword() {
@@ -28,7 +28,7 @@ public class AuthParam {
 
 
     public static final class Builder {
-        private String userName;
+        private String loginName;
         private String password;
 
         private Builder() {
@@ -38,8 +38,8 @@ public class AuthParam {
             return new Builder();
         }
 
-        public Builder userName(String userName) {
-            this.userName = userName;
+        public Builder loginName(String loginName) {
+            this.loginName = loginName;
             return this;
         }
 
@@ -50,7 +50,7 @@ public class AuthParam {
 
         public AuthParam build() {
             AuthParam authParam = new AuthParam();
-            authParam.setUserName(userName);
+            authParam.setLoginName(loginName);
             authParam.setPassword(password);
             return authParam;
         }

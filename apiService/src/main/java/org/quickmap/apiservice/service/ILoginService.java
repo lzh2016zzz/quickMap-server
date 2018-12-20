@@ -2,6 +2,7 @@ package org.quickmap.apiservice.service;
 
 import org.quickMap.exception.AuthenticationException;
 import org.quickmap.apiservice.model.AuthParam;
+import org.quickmap.apiservice.model.CreateUserParam;
 import org.quickmap.dataService.dao.model.UserInfo;
 
 import javax.servlet.http.HttpServletResponse;
@@ -17,14 +18,14 @@ public interface ILoginService {
      * @param response
      * @throws AuthenticationException
      */
-    void webLogin(AuthParam authParam, HttpServletResponse response)throws AuthenticationException;
+    UserInfo webLogin(AuthParam authParam, HttpServletResponse response)throws AuthenticationException;
 
     /**
      * 创建用户
      * @param param
      * @return id
      */
-    String createUser(UserInfo param);
+    String createUser(CreateUserParam param);
 
     /**
      * 登陆

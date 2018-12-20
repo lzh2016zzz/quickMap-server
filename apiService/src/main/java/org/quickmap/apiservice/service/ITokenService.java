@@ -1,6 +1,5 @@
 package org.quickmap.apiservice.service;
 
-import io.jsonwebtoken.Claims;
 import org.quickmap.dataService.dao.model.UserInfo;
 
 import java.util.Map;
@@ -23,5 +22,11 @@ public interface ITokenService {
      * @return
      */
     UserInfo getUserByToken(String token);
+
+    /**
+     * 拉黑令牌
+     * @param token
+     */
+    void invalidate(String token);
 
 }

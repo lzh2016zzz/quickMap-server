@@ -4,17 +4,20 @@ import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.quickmap.apiservice.security.SecurityHelper;
 import org.quickmap.apiservice.service.ITokenService;
 import org.quickmap.dataService.dao.model.UserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TokenServiceImpl implements ITokenService {
@@ -27,8 +30,27 @@ public class TokenServiceImpl implements ITokenService {
     @Value("${token.secret}")
     private String secret;
 
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Override
-    public String generateToken(Map<String,Object>claims) {
+    public void invalidate(String token) {
+        Claims claims = getClaims(token);
+        if (claims.getExpiration().getTime() < new Date().getTime()) {
+            return;
+        }
+        UserInfo userInfo = getUserInfoByClaims(claims);
+        String key = getBlockKey(userInfo.getLoginName());
+
+        Long expire = redisTemplate.getExpire(key);
+        redisTemplate.opsForSet().add(key, token);
+        System.out.println(expire > 0 && expire > expireSeconds ? expire: expireSeconds * 1000);
+        redisTemplate.expire(key, expire > 0 && expire > expireSeconds ? expire: expireSeconds, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public String generateToken(Map<String, Object> claims) {
         Assert.notNull(claims, "参数不能为空");
         Date nowDate = new Date();
         Date expireDate = new Date(nowDate.getTime() + expireSeconds * 1000);
@@ -37,20 +59,68 @@ public class TokenServiceImpl implements ITokenService {
 
     @Override
     public UserInfo getUserByToken(String token) {
-        Assert.hasText(token, "参数不能为空");
         try {
-            Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-
-            Date expiration = claims.getExpiration();
-            Date now = new Date();
-            if (now.getTime() > expiration.getTime()) {
-                throw new CredentialsExpiredException("该账号已经过期,请重新登陆");
+            Claims claims = getClaims(token);
+            SecurityHelper.checkValidate(claims);
+            UserInfo userInfo = getUserInfoByClaims(claims);
+            if (tokenIsBlocked(userInfo, token)) {
+                return null;
             }
-            return new JSONObject(claims).toJavaObject(UserInfo.class);
+            return getUserInfoByClaims(claims);
         } catch (Exception e) {
             logger.debug("token解密失败", e);
             return null;
         }
+    }
+
+    /**
+     * 获取用户
+     *
+     * @param claims
+     * @return
+     */
+    protected UserInfo getUserInfoByClaims(Claims claims) {
+        if(claims == null){
+            return null;
+        }
+        return new JSONObject(claims).toJavaObject(UserInfo.class);
+    }
+
+    /**
+     * token是否被拉黑
+     *
+     * @param userInfo
+     * @param token
+     * @return
+     */
+    protected boolean tokenIsBlocked(UserInfo userInfo, String token) {
+        if(token == null || userInfo == null){
+            return false;
+        }
+        System.out.println(redisTemplate.opsForSet().members(getBlockKey(userInfo.getLoginName())));
+        System.out.println(redisTemplate.getExpire(getBlockKey(userInfo.getLoginName())));
+        return redisTemplate.opsForSet().isMember(getBlockKey(userInfo.getLoginName()), token);
+    }
+
+    /**
+     * 获取黑名单key
+     *
+     * @param loginName
+     * @return
+     */
+    protected String getBlockKey(String loginName) {
+        return "block_".concat(loginName);
+    }
+
+
+    /**
+     * 获取主体
+     *
+     * @param token
+     * @return
+     */
+    protected Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
 
 }
