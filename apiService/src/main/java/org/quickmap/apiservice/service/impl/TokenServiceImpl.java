@@ -45,7 +45,6 @@ public class TokenServiceImpl implements ITokenService {
 
         Long expire = redisTemplate.getExpire(key);
         redisTemplate.opsForSet().add(key, token);
-        System.out.println(expire > 0 && expire > expireSeconds ? expire: expireSeconds * 1000);
         redisTemplate.expire(key, expire > 0 && expire > expireSeconds ? expire: expireSeconds, TimeUnit.SECONDS);
     }
 
@@ -97,8 +96,6 @@ public class TokenServiceImpl implements ITokenService {
         if(token == null || userInfo == null){
             return false;
         }
-        System.out.println(redisTemplate.opsForSet().members(getBlockKey(userInfo.getLoginName())));
-        System.out.println(redisTemplate.getExpire(getBlockKey(userInfo.getLoginName())));
         return redisTemplate.opsForSet().isMember(getBlockKey(userInfo.getLoginName()), token);
     }
 
