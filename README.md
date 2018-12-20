@@ -41,11 +41,14 @@ cd RediSearch
 cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
 make
 ```  
-4.编译完成后,执行启动Redisearch
+4.编译完成后,执行Redisearch
+
 ```
 cd ..
 ./src/redis-server --loadmodule ./RediSearch/redisearch.so
 ```
+
+或者在```redis.conf ```中加入配置: ``` loadmodule /路径/redisearch.so ```
 
 
 * Fastdfs & Fastdfs-Nginx-Module
