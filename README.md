@@ -27,7 +27,7 @@ Ubuntu:
 ```
 sudo apt-get install mysql-server
 ```  
-* Redis & Redisearch  
+* 安装Redis & Redisearch  
 
 1.安装redis4.0以上版本,支持module
 
@@ -49,3 +49,5 @@ cd ..
 
 
 * Fastdfs & Fastdfs-Nginx-Module
+
+
