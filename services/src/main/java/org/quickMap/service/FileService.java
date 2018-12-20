@@ -21,8 +21,8 @@ public interface FileService {
 
     /**
      * 上传单个文件
-     *
-     * @param files
+     * @param files 上传的文件
+     * @param thumbImage 是否生成缩略图
      * @return
      */
     @RequestMapping(value = "/file/upload", method = RequestMethod.POST,
@@ -33,7 +33,8 @@ public interface FileService {
     /**
      * 上传base64
      *
-     * @param b64
+     * @param b64 文件base64编码
+     * @param thumbImage 是否生成缩略图
      * @return
      * @throws Exception
      */
@@ -42,18 +43,17 @@ public interface FileService {
 
     /**
      * 下载文件
-     *
-     * @param path
+     * @param path 根据编码路径下载文件
      * @return
      * @throws Exception
      */
+    @Deprecated
     @RequestMapping(value = "/file/{group}/{path}")
     ResponseEntity<byte[]> download(@PathVariable("group") String group, @PathVariable("path") String path);
 
     /**
      * 删除文件
-     *
-     * @param delPath
+     * @param delPath 根据参数删除文件
      * @return
      */
     @RequestMapping(value = "/file/del/{delPath}")
@@ -61,29 +61,20 @@ public interface FileService {
 
     /**
      * 根据名称精确搜索
-     *
-     * @param fileName
+     * @param fileName 文件名称
      * @return
      */
     @RequestMapping("/search/exec")
     String search(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam(value = "before",required = false)Long before,@RequestParam(value = "after",required = false)Long after,@RequestParam(value = "suffix",required = false)String suffix);
 
     /**
-     * 根据前缀获取完成建议
+     * 根据文本前缀获取完成建议 如 输入 : abcd 返回 abcd.jpg 和 abcdef.gif
      *
-     * @param prefix
+     * @param prefix 文本
      * @return
      */
     @RequestMapping(value = "/search/prefix/{prefix}")
     String prefix(@PathVariable("prefix") String prefix);
-
-    /**
-     * 初始化自动补全数据
-     * @param
-     * @return
-     */
-    @RequestMapping("/search/initAuto")
-    String initAuto(@RequestParam("rebuild") boolean rebuild) throws Exception;
 
     /**
      * 配置上传文件支持

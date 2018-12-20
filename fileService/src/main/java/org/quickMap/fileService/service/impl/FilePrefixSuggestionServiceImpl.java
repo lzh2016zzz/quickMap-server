@@ -54,7 +54,7 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
         rediSearchClient.createIndex(schema, Client.IndexOptions.Default());
     }
 
-    public void initSugKeys(List<String>keys, boolean rebuild){
+    public void initSugKeys(Set<String>keys, boolean rebuild){
         logger.info("初始化自动补全服务..");
         if(keys == null || keys.size() == 0){
             logger.error("字段数量为0,取消初始化..");

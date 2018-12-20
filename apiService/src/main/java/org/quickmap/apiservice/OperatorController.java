@@ -34,8 +34,7 @@ public class OperatorController extends BaseController {
 
     /**
      * 删除文件
-     *
-     * @param delPath
+     * @param delPath 根据参数删除文件
      * @return
      */
     @RequestMapping(value = "/file/del/{delPath}")
@@ -95,16 +94,5 @@ public class OperatorController extends BaseController {
         return fileService.prefix(prefix);
     }
 
-    /**
-     * 初始化自动补全数据
-     * @param
-     * @return
-     */
-    @PreAuthorize("hasAnyRole('"+RoleList.ADMIN+"')")
-    @RequestMapping("/search/initAuto")
-    public String initAuto(@RequestParam("rebuild") boolean rebuild)throws Exception{
-        fileService.initAuto(rebuild);
-        return successRender();
-    }
 
 }

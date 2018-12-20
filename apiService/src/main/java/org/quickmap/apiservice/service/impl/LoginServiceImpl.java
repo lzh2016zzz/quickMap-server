@@ -12,7 +12,6 @@ import org.quickmap.dataService.dao.UserInfoMapper;
 import org.quickmap.dataService.dao.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -119,8 +118,8 @@ public class LoginServiceImpl implements ILoginService {
 
     /**
      * 生成密钥
-     * @param password
-     * @param salt
+     * @param password 密码
+     * @param salt 盐值
      * @return
      */
     protected String getEncryptedPassword(String password, String salt) {

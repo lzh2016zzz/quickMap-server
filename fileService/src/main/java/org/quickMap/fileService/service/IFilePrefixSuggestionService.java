@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 自动补全建议服务
+ * 自动补全建议
  */
 public interface IFilePrefixSuggestionService {
 
@@ -20,9 +20,9 @@ public interface IFilePrefixSuggestionService {
     void addSugKey(Set<MetaData> metaData, String fileName) throws Exception;
 
     /**
-     * 删除
+     * 删除一条记录
      *
-     * @param fileName
+     * @param fileName 文件名称
      */
     void deleteSugKey(String fileName);
 
@@ -36,8 +36,8 @@ public interface IFilePrefixSuggestionService {
 
     /**
      * 初始化自动补全数据
-     * @param keys
-     * @param rebuild
+     * @param keys 值
+     * @param rebuild true : 替换 false :添加
      */
-    void initSugKeys(List<String> keys, boolean rebuild);
+    void initSugKeys(Set<String> keys, boolean rebuild);
 }

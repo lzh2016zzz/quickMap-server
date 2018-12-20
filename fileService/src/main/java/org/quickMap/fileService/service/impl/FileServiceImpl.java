@@ -142,13 +142,12 @@ public class FileServiceImpl implements IFileService {
     @Override
     public void initFileNameSearchText(boolean rebuild) {
         List<String> fileNames = fileInfoMapper.queryFileNameSet();
-        sug.initSugKeys(fileNames, rebuild);
+        sug.initSugKeys(new HashSet<>(fileNames), rebuild);
     }
 
     /**
      * 是否支持生成缩略图
-     *
-     * @param uploadFileName
+     * @param uploadFileName 文件名称
      * @return
      */
     protected boolean isSupportThumbImageType(String uploadFileName) {
@@ -171,8 +170,8 @@ public class FileServiceImpl implements IFileService {
     /**
      * 获取下载地址
      *
-     * @param uploadFileName
-     * @param fullPath
+     * @param uploadFileName 上传文件名
+     * @param fullPath 下载地址
      * @return
      */
     protected String getDownloadUrl(String uploadFileName, String fullPath) {
@@ -181,8 +180,7 @@ public class FileServiceImpl implements IFileService {
 
     /**
      * 获取路径对象
-     *
-     * @param fullPath
+     * @param fullPath 完整下载路径
      * @return
      */
     protected StorePath getStorePath(String fullPath) {
@@ -200,7 +198,7 @@ public class FileServiceImpl implements IFileService {
 
     /**
      * 获取删除地址
-     * @param param
+     * @param param id
      * @return
      */
     protected String getDelParam(Object param) {
@@ -226,7 +224,7 @@ public class FileServiceImpl implements IFileService {
     /**
      * 重新编码文件存储名称,解决上传失败,错误码22问题
      *
-     * @param original
+     * @param original 原文件名
      * @return
      */
     protected String genStoreFileName(String original) {
@@ -244,7 +242,6 @@ public class FileServiceImpl implements IFileService {
         Assert.notNull(fileInfos, "");
         return fileInfos.stream().map(f -> solveFileInfoData(f)).collect(Collectors.toList());
     }
-
 
     protected FileInfoData solveFileInfoData(FileInfo info) {
         FileInfoData data = new FileInfoData();

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 /**
- * redis配置
+ * redis配置-常量
  */
 @Configuration
 @PropertySource("classpath:redis.properties")

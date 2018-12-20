@@ -1,13 +1,10 @@
 package org.quickmap.apiservice.model;
 
+/**
+ * 创建用户参数
+ */
 public class CreateUserParam {
 
-    /**
-     * loginName :
-     * password :
-     * userName :
-     * resetPasswordAnswer :
-     */
 
     private String loginName;
     private String password;

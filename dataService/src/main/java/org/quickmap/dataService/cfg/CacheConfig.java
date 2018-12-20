@@ -6,9 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 
-/**
- * 缓存配置
- */
 
 /**
  * redis缓存配置

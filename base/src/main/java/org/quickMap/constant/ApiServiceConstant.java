@@ -1,13 +1,26 @@
 package org.quickMap.constant;
 
+
 public class ApiServiceConstant {
 
-    public static final String AUTH_TOKEN = "authToken";//访问令牌
+    /**
+     * 访问令牌
+     */
+    public static final String AUTH_TOKEN = "authToken";
 
-    public static final String USER_INFO = "userInfo";//用户信息
+    /**
+     * 用户信息
+     */
+    public static final String USER_INFO = "userInfo";
 
-    public static final String ROLE_PREFIX = "ROLE_";//用户角色前缀
+    /**
+     * 用户角色前缀
+     */
+    public static final String ROLE_PREFIX = "ROLE_";
 
+    /**
+     * 角色
+     */
     public static class RoleList{
 
         /**
@@ -26,7 +39,9 @@ public class ApiServiceConstant {
         public static final String VIP_USER = "VIP";
     }
 
-
+    /**
+     * 文件删除状态
+     */
     public static class DelStatus{
 
         /**

@@ -29,7 +29,7 @@ public class SecurityHelper {
 
     /**
      * 校验是否过期
-     * @param claims
+     * @param claims 主体
      */
     public static void checkValidate(Claims claims) {
         Date expiration = claims.getExpiration();
