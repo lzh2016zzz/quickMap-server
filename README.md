@@ -3,7 +3,7 @@ quick-map是一个分布式的图床服务器.可以提供高性能,高可用的
 # 功能
 
 * 上传图片.
-* 上传base64格式图片.
+* 上传base64编码图片.
 * 批量上传图片
 * 生成缩略图
 * 文件搜索/基于redisearch的自动补全功能
@@ -54,4 +54,4 @@ cd ..
 
 * 安装Fastdfs & Fastdfs-Nginx-Module
 
-
+参考 :https://blog.csdn.net/qq_17770183/article/details/79397687
