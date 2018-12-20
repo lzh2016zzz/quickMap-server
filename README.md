@@ -15,5 +15,15 @@ quick-map是一个分布式的图床服务器.可以提供高性能,高可用的
 
 # 使用方法
 
-## 环境安装
-* [安装Redisearch]
+## 环境
+* Mysql  
+Centos:  
+```
+sudo yum install mariadb-server mariadb
+```  
+Ubuntu:  
+```
+sudo apt-get install mysql-server
+```  
+* Redis & Redisearch
+* Fastdfs & Fastdfs-Nginx-Module
