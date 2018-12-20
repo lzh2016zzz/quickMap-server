@@ -2,12 +2,13 @@ quick-map是一个分布式的图床服务器.可以提供高性能,高可用的
 
 # 功能
 
-* 上传图片
+* 上传图片.
 * 上传base64格式图片.
 * 批量上传图片
 * 生成缩略图
 * 文件搜索/基于redisearch的自动补全功能
 * 支持多种文件格式
+* 高性能,高可用的图片访问服务
 
 # 特性
 * 高性能，高可用,支持横向拓展,使用spring cloud实现服务治理,文件存储/访问使用了fastdfs + nginx 
@@ -51,6 +52,6 @@ cd ..
 或者在```redis.conf ```中加入配置: ``` loadmodule /路径/redisearch.so ```
 
 
-* Fastdfs & Fastdfs-Nginx-Module
+* 安装Fastdfs & Fastdfs-Nginx-Module
 
 
