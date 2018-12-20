@@ -12,7 +12,6 @@ import org.quickmap.dataService.dao.UserInfoMapper;
 import org.quickmap.dataService.dao.model.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;

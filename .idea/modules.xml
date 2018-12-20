@@ -8,7 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/fileService/fileService.iml" filepath="$PROJECT_DIR$/fileService/fileService.iml" />
       <module fileurl="file://$PROJECT_DIR$/quickMap-server.iml" filepath="$PROJECT_DIR$/quickMap-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/regService/regService.iml" filepath="$PROJECT_DIR$/regService/regService.iml" />
-      <module fileurl="file://$PROJECT_DIR$/services/services.iml" filepath="$PROJECT_DIR$/services/services.iml" />
     </modules>
   </component>
 </project>

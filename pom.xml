@@ -27,8 +27,6 @@
         <module>fileService</module>
         <!-- 提供api/权限控制 -->
         <module>apiService</module>
-        <!-- 将服务提供者在此处注册,实现RPC调用/负载均衡 -->
-        <module>services</module>
         <!-- 数据库/缓存 -->
         <module>dataService</module>
         <!--基础类-->
@@ -88,13 +86,4 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>

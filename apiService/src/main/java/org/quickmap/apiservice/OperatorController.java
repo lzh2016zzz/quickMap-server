@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.quickMap.base.BaseController;
 import org.quickMap.constant.ApiServiceConstant;
 import org.quickMap.constant.ApiServiceConstant.RoleList;
-import org.quickMap.service.FileService;
+import org.quickmap.apiservice.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
