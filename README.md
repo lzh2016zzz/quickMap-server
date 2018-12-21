@@ -1,4 +1,6 @@
-quick-map是一个分布式的图床服务器.可以提供高性能,高可用的分布式图片访问服务.
+quick-map是一个分布式的图床服务器.可以提供高性能,高可用的分布式图片访问服务.  
+
+前端工程 : https://github.com/lzh2016zzz/quickMap-front
 
 # 功能
 
