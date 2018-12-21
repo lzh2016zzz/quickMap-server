@@ -72,7 +72,7 @@ public class LoginServiceImpl implements ILoginService {
             throw new AuthenticationException("用户名或密码不能为空");
         }
         UserInfo userInfo = userInfoMapper.queryUserInfoLimit1(UserInfo.QueryBuild().loginName(userName).isDel(COMMON).build());
-        if (!verifyPassword(password, userInfo)) {
+        if (userInfo == null || !verifyPassword(password, userInfo)) {
             throw new AuthenticationException("账号不存在,或密码错误");
         }
         return userInfo;
