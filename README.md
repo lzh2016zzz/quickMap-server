@@ -24,7 +24,7 @@ mvn install
 ## 环境
 * 安装Mysql
 
-Centos:  
+CentOs:  
 ```
 sudo yum install mariadb-server mariadb
 ```  
@@ -60,3 +60,15 @@ cd ..
 * 安装Fastdfs & Fastdfs-Nginx-Module
 
 参考 :https://blog.csdn.net/qq_17770183/article/details/79397687
+
+## 配置
+
+```
+regService/src/main/resources/application.properties //注册中心配置
+apiService/src/main/resources/application.properties //api/权限配置
+fileService/src/main/resources/application.properties //文件服务配置
+
+dataService/src/main/resources/mybatis.properties //mybatis 模块配置
+dataService/src/main/resources/redis.properties //redis 模块配置
+```
+具体可以看配置里的注释
