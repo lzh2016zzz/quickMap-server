@@ -11,7 +11,6 @@
         <module name="dataService" />
         <module name="fileService" />
         <module name="regService" />
-        <module name="services" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
