@@ -32,6 +32,8 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
 
     private RedisConstant config;
 
+    private ThreadLocal<Client> clientThreadLocal;
+
     @Autowired
     public FilePrefixSuggestionServiceImpl(RedisConstant config) {
         this.config = config;
@@ -141,7 +143,11 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
      * @return
      */
     private Client getRediSearchClient(){
-        return new Client(config.getFsIndexName(), config.getHost(), config.getPort(), config.getTimeout(), config.getPoolSize(), config.getPassword());
+        if(clientThreadLocal == null){
+            clientThreadLocal = new ThreadLocal<>();
+            clientThreadLocal.set(new Client(config.getFsIndexName(), config.getHost(), config.getPort(), config.getTimeout(), config.getPoolSize(), config.getPassword()));
+        }
+        return clientThreadLocal.get();
     }
 
 }
