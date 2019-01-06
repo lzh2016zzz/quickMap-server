@@ -20,17 +20,18 @@ public class FileSearchController extends BaseController {
     @Autowired
     protected IFileService fileService;
 
+    /**
+     * 搜索文件
+     * @param fileName 文件全名
+     * @param before 时间戳 在..之前
+     * @param after  时间戳 在..之后
+     * @param suffix 后缀名
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/exec")
     public String search(@RequestParam(value = "fileName",required = false) String fileName,@RequestParam(value = "before",required = false)Long before,@RequestParam(value = "after",required = false)Long after,@RequestParam(value = "suffix",required = false)String suffix)throws Exception{
         return jsonRender(fileService.search(fileName,before,after,suffix,null));
-    }
-
-
-
-    @RequestMapping("/initAuto")
-    public String initAuto(@RequestParam("rebuild") boolean rebuild) throws Exception{
-        fileService.initFileNameSearchText(rebuild);
-        return successRender();
     }
 
     /**

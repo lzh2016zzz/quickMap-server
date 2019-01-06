@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.quickmap.dataService.dao.base.UserInfoBaseMapper">
+<mapper namespace="org.quickMap.dataService.dao.base.UserInfoBaseMapper">
 
 
     <insert id="insertUserInfo" >
@@ -283,7 +283,7 @@
     </update>
 
 
-    <resultMap type="org.quickmap.dataService.dao.model.UserInfo" id="UserInfoMap">
+    <resultMap type="org.quickMap.dataService.dao.model.UserInfo" id="UserInfoMap">
         <result property="id" column="id"/>
         <result property="loginName" column="login_name"/>
         <result property="password" column="password"/>
@@ -324,7 +324,7 @@
             <if test="resetPasswordAnswer != null and resetPasswordAnswer!=''">
                 `reset_password_answer` = #{resetPasswordAnswer} and
             </if>
-            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
+            <if test = "(_parameter instanceof org.quickMap.dataService.dao.model.UserInfo$QueryBuilder) == true">
                 <if test="idList != null">
                     `id` in
                     <foreach collection="idList" close=")" open="(" separator="," item="item">
@@ -510,7 +510,7 @@
             <if test="resetPasswordAnswer != null and resetPasswordAnswer!=''">
                 `reset_password_answer` = #{resetPasswordAnswer} and
             </if>
-            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
+            <if test = "(_parameter instanceof org.quickMap.dataService.dao.model.UserInfo$QueryBuilder) == true">
                     <if test="idList != null">
                         `id` in
                         <foreach collection="idList" close=")" open="(" separator="," item="item">
@@ -685,7 +685,7 @@
 
     <sql id="baseResult">
         <trim suffixOverrides=",">
-            <if test = "(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == true">
+            <if test = "(_parameter instanceof org.quickMap.dataService.dao.model.UserInfo$QueryBuilder) == true">
 
                 <if test="fetchFields==null">
                     <include refid="allResult"></include>
@@ -756,7 +756,7 @@
                     </if>
                 </if>
             </if>
-            <if test="(_parameter instanceof org.quickmap.dataService.dao.model.UserInfo$QueryBuilder) == false" >
+            <if test="(_parameter instanceof org.quickMap.dataService.dao.model.UserInfo$QueryBuilder) == false" >
                 <include refid="allResult"></include>
             </if>
 

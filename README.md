@@ -1,4 +1,6 @@
-quick-map是一个分布式的图床服务器.可以提供高性能,高可用的分布式图片访问服务.
+quick-map是一个分布式的图床服务器.可以提供高性能,高可用的分布式图片访问服务.  
+
+前端工程 : https://github.com/lzh2016zzz/quickMap-front
 
 # 功能
 
@@ -14,12 +16,17 @@ quick-map是一个分布式的图床服务器.可以提供高性能,高可用的
 * 高性能，高可用,支持横向拓展,使用spring cloud实现服务治理,文件存储/访问使用了fastdfs + nginx 
 * 基于jwt的无状态权限控制
 
-# 使用方法
+# 使用方法  
+
+## 构建
+```
+mvn install
+```  
 
 ## 环境
 * 安装Mysql
 
-Centos:  
+CentOs:  
 ```
 sudo yum install mariadb-server mariadb
 ```  
@@ -55,3 +62,15 @@ cd ..
 * 安装Fastdfs & Fastdfs-Nginx-Module
 
 参考 :https://blog.csdn.net/qq_17770183/article/details/79397687
+
+## 配置
+
+```
+regService/src/main/resources/application.properties //注册中心配置
+apiService/src/main/resources/application.properties //api/权限配置
+fileService/src/main/resources/application.properties //文件服务配置
+
+dataService/src/main/resources/mybatis.properties //mybatis 模块配置
+dataService/src/main/resources/redis.properties //redis 模块配置
+```
+具体可以看配置里的注释

@@ -99,7 +99,7 @@ public interface IFileService {
 
     /**
      * 初始化自动补全文本
-     * @param rebuild
+     * @param rebuild 是否重建
      * @throws Exception
      */
     void initFileNameSearchText(boolean rebuild)throws Exception;
