@@ -1,4 +1,6 @@
 package org.quickMap.dataService.dao.model;
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,12 +32,14 @@ public class UserInfo implements Serializable {
     * 
     * isNullAble:0
     */
+    @JSONField(serialize = false)
     private String password;
 
     /**
     * 
     * isNullAble:0
     */
+    @JSONField(serialize = false)
     private String salt;
 
     /**
@@ -54,6 +58,7 @@ public class UserInfo implements Serializable {
     * 
     * isNullAble:1,defaultVal:1
     */
+    @JSONField(serialize = false)
     private Integer isDel;
 
     /**
