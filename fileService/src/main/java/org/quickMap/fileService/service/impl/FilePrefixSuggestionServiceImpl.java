@@ -12,6 +12,7 @@ import org.quickMap.dataService.cfg.RedisConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import redis.clients.jedis.BinaryClient;
@@ -21,7 +22,6 @@ import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisDataException;
 
 import java.util.*;
-
 @Service
 public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionService {
 
@@ -30,9 +30,14 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
     @Autowired
     public static final int maxSuggestions = 15;
 
+    @Autowired
+    private RedisTemplate<String, Boolean> redisTemplate;
+
     private RedisConstant config;
 
     private ThreadLocal<Client> clientThreadLocal;
+
+    private ThreadLocal<JedisPool> jedisPoolThreadLocal;
 
     @Autowired
     public FilePrefixSuggestionServiceImpl(RedisConstant config) {
@@ -45,40 +50,46 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
         //单机模式初始化
         Client rediSearchClient = new Client(config.getFsIndexName(), config.getHost(), config.getPort(), config.getTimeout(), config.getPoolSize(), config.getPassword());
         try {
-            createIndex(rediSearchClient);
+            synchronized (this) {
+                createIndex(rediSearchClient);
+            }
         } catch (JedisDataException e) {
 
         }
     }
 
     private void createIndex(Client rediSearchClient) {
-        Schema schema = new Schema().addTextField(Meta.FILENAME, 5.0).addNumericField(Meta.TIMESTAMP);
-        rediSearchClient.createIndex(schema, Client.IndexOptions.Default());
+        synchronized (this) {
+            Schema schema = new Schema().addTextField(Meta.FILENAME, 5.0).addNumericField(Meta.TIMESTAMP);
+            rediSearchClient.createIndex(schema, Client.IndexOptions.Default());
+        }
     }
 
-    public void initSugKeys(Set<String>keys, boolean rebuild){
-        logger.info("初始化自动补全服务..");
-        if(keys == null || keys.size() == 0){
-            logger.error("字段数量为0,取消初始化..");
-            return;
+    public void initSugKeys(Set<String> keys, boolean rebuild) {
+        synchronized (this) {
+            logger.info("初始化自动补全服务..");
+            if (keys == null || keys.size() == 0) {
+                logger.error("字段数量为0,取消初始化..");
+                return;
+            }
+            if (rebuild) {
+                Client client = getRediSearchClient();
+                client.dropIndex(true);
+                createIndex(client);
+                logger.info("重置自动补全数据..");
+            }
+            int length = 0;
+            for (Iterator<String> it = keys.iterator(); it.hasNext(); ) {
+                addSugKey(null, it.next());
+                ++length;
+            }
+            logger.info("初始化成功,共{}个字符串.", length);
         }
-        if(rebuild){
-            Client client = getRediSearchClient();
-            client.dropIndex(true);
-            createIndex(client);
-            logger.info("重置自动补全数据..");
-        }
-        int length = 0;
-        for(Iterator<String>it = keys.iterator(); it.hasNext();){
-            addSugKey(null,it.next());
-            ++length;
-        }
-        logger.info("初始化成功,共{}个字符串.",length);
     }
 
 
     @Override
-    public void addSugKey(Set<MetaData> metaData, String fileName){
+    public void addSugKey(Set<MetaData> metaData, String fileName) {
         Assert.hasText(fileName, "字段不能为空");
         getRediSearchClient().addSuggestion(Suggestion.builder().str(fileName).build(), true);
     }
@@ -105,19 +116,25 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
 
     /**
      * 初始化jedis连接池
+     *
      * @return
      */
     private JedisPool getJedisPool() {
         try {
-            JedisPoolConfig conf = initPoolConfig(config.getPoolSize());
-           return new JedisPool(conf, config.getHost(), config.getPort(),config.getTimeout(),config.getPassword());
-        } catch (Exception e){
+            if (jedisPoolThreadLocal == null) {
+                jedisPoolThreadLocal = new ThreadLocal<>();
+                JedisPoolConfig conf = initPoolConfig(config.getPoolSize());
+                jedisPoolThreadLocal.set(new JedisPool(conf, config.getHost(), config.getPort(), config.getTimeout(), config.getPassword()));
+            }
+            return jedisPoolThreadLocal.get();
+        } catch (Exception e) {
             throw new NullPointerException("获取jedis连接池异常");
         }
     }
 
     /**
      * 初始化jedis配置
+     *
      * @param poolSize
      * @return
      */
@@ -137,13 +154,12 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
     }
 
     /**
-     *
      * 注意 : Client 对象不是线程安全的.
      *
      * @return
      */
-    private Client getRediSearchClient(){
-        if(clientThreadLocal == null){
+    private Client getRediSearchClient() {
+        if (clientThreadLocal == null) {
             clientThreadLocal = new ThreadLocal<>();
             clientThreadLocal.set(new Client(config.getFsIndexName(), config.getHost(), config.getPort(), config.getTimeout(), config.getPoolSize(), config.getPassword()));
         }
