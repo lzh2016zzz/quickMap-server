@@ -37,7 +37,7 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
 
     private ThreadLocal<Client> clientThreadLocal;
 
-    private ThreadLocal<JedisPool> jedisPoolThreadLocal;
+    private JedisPool jedisPool;
 
     @Autowired
     public FilePrefixSuggestionServiceImpl(RedisConstant config) {
@@ -121,12 +121,13 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
      */
     private JedisPool getJedisPool() {
         try {
-            if (jedisPoolThreadLocal == null) {
-                jedisPoolThreadLocal = new ThreadLocal<>();
-                JedisPoolConfig conf = initPoolConfig(config.getPoolSize());
-                jedisPoolThreadLocal.set(new JedisPool(conf, config.getHost(), config.getPort(), config.getTimeout(), config.getPassword()));
+            if (jedisPool == null) {
+                synchronized (this) {
+                    JedisPoolConfig conf = initPoolConfig(config.getPoolSize());
+                    jedisPool = new JedisPool(conf, config.getHost(), config.getPort(), config.getTimeout(), config.getPassword());
+                }
             }
-            return jedisPoolThreadLocal.get();
+            return jedisPool;
         } catch (Exception e) {
             throw new NullPointerException("获取jedis连接池异常");
         }
