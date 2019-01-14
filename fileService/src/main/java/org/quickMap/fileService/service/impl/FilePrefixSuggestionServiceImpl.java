@@ -30,14 +30,9 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
     @Autowired
     public static final int maxSuggestions = 15;
 
-    @Autowired
-    private RedisTemplate<String, Boolean> redisTemplate;
-
     private RedisConstant config;
 
     private ThreadLocal<Client> clientThreadLocal = new ThreadLocal<>();
-
-    private JedisPool jedisPool;
 
     @Autowired
     public FilePrefixSuggestionServiceImpl(RedisConstant config) {
@@ -121,13 +116,8 @@ public class FilePrefixSuggestionServiceImpl implements IFilePrefixSuggestionSer
      */
     private JedisPool getJedisPool() {
         try {
-            if (jedisPool == null) {
-                synchronized (this) {
-                    JedisPoolConfig conf = initPoolConfig(config.getPoolSize());
-                    jedisPool = new JedisPool(conf, config.getHost(), config.getPort(), config.getTimeout(), config.getPassword());
-                }
-            }
-            return jedisPool;
+            JedisPoolConfig conf = initPoolConfig(config.getPoolSize());
+            return new JedisPool(conf, config.getHost(), config.getPort(), config.getTimeout(), config.getPassword());
         } catch (Exception e) {
             throw new NullPointerException("获取jedis连接池异常");
         }
