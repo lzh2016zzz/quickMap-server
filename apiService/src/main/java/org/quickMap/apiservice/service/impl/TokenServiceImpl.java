@@ -11,7 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -44,8 +47,15 @@ public class TokenServiceImpl implements ITokenService {
         String key = getBlockKey(userInfo.getLoginName());
 
         Long expire = redisTemplate.getExpire(key);
-        redisTemplate.opsForSet().add(key, token);
-        redisTemplate.expire(key, expire > 0 && expire > expireSeconds ? expire: expireSeconds, TimeUnit.SECONDS);
+
+        redisTemplate.execute(new SessionCallback<Object>() {
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                operations.opsForSet().add(key, token);
+                operations.expire(key, expire > 0 && expire > expireSeconds ? expire: expireSeconds, TimeUnit.SECONDS);
+                return operations;
+            }
+        });
     }
 
     @Override
