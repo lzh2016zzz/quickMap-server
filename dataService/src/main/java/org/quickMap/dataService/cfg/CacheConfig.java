@@ -18,6 +18,7 @@ public class CacheConfig {
     public <T> RedisTemplate<String, T> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, T> redis = new RedisTemplate<>();
         redis.setConnectionFactory(redisConnectionFactory);
+        redis.setEnableTransactionSupport(true);
         redis.afterPropertiesSet();
         return redis;
     }
